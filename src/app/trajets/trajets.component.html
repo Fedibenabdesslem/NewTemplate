@@ -1,0 +1,47 @@
+<div class="trajet-container">
+    <h1 class="title">Trouvez votre trajet idéal</h1>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Départ" class="search-input">
+      <input type="text" placeholder="Arrivée" class="search-input">
+      <input type="date" class="search-input">
+      <button class="search-button">Rechercher</button>
+    </div>
+  
+    <div class="trajets-list">
+      <div *ngFor="let trajet of trajets" class="trajet-card">
+        <div class="trajet-header">
+          <h2>{{ trajet.depart }} → {{ trajet.arrivee }}</h2>
+          <span class="price">{{ trajet.prix }}€</span>
+        </div>
+        
+        <div class="trajet-details">
+          <div class="detail">
+            <i class="fas fa-calendar-alt"></i>
+            <span>{{ trajet.date }} à {{ trajet.heure }}</span>
+          </div>
+          <div class="detail">
+            <i class="fas fa-car"></i>
+            <span>{{ trajet.vehicule }}</span>
+          </div>
+          <div class="detail">
+            <i class="fas fa-user-friends"></i>
+            <span>{{ trajet.places }} places disponibles</span>
+          </div>
+        </div>
+        
+        <div class="driver-info">
+          <img [src]="trajet.conducteur.avatar" alt="Conducteur" class="driver-avatar">
+          <div class="driver-details">
+            <span class="driver-name">{{ trajet.conducteur.nom }}</span>
+            <div class="rating">
+              <span class="stars">★★★★★</span>
+              <span class="note">{{ trajet.conducteur.note }}/5</span>
+            </div>
+          </div>
+        </div>
+        
+        <button class="reserve-button" (click)="reserverTrajet(trajet.id)" routerLink="/payment">Réserver</button>
+      </div>
+    </div>
+  </div>

@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+/* Styles globaux */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.main-content {
+  min-height: calc(100vh - 120px); /* Ajustez selon la hauteur de votre header/footer */
+  padding: 20px 0;
+}
+
+/* Styles pour les cartes de trajet */
+.trajet-card {
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.trajet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Styles pour le formulaire */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}

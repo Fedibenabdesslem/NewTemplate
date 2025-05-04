@@ -1,0 +1,66 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo">
+      <img src="/images3.jpg" alt="Logo Covoiturage Tunisie">
+      <h2>Connexion</h2>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email"
+          placeholder="votre@email.com"
+          [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        <div class="error-message" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+          Email requis
+        </div>
+        <div class="error-message" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+          Email invalide
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="password-input">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            id="password" 
+            formControlName="password"
+            placeholder="••••••••"
+            [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <button type="button" (click)="togglePasswordVisibility()" class="toggle-password">
+            <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+          Mot de passe requis
+        </div>
+        <div class="error-message" *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+          Minimum 6 caractères
+        </div>
+      </div>
+
+      <div class="remember-forgot">
+        <label class="remember-me">
+          <input type="checkbox" formControlName="rememberMe">
+          <span>Se souvenir de moi</span>
+        </label>
+        <a routerLink="/forgot-password" class="forgot-password">Mot de passe oublié ?</a>
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Se connecter</span>
+        <span *ngIf="isLoading">
+          <i class="fas fa-spinner fa-spin"></i> Connexion...
+        </span>
+      </button>
+    </form>
+
+    <div class="register-link">
+      Nouveau membre ? <a routerLink="/register">Créer un compte</a>
+    </div>
+  </div>
+</div>

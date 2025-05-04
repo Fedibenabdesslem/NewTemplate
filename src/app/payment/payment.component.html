@@ -1,0 +1,156 @@
+<div class="payment-container" data-aos="fade-in">
+    <div class="payment-header">
+      <h1>Paiement sécurisé</h1>
+      <div class="progress-steps">
+        <div class="step" [class.active]="progress >= 1" [class.completed]="progress > 1">
+          <span>1</span>
+          <p>Méthode</p>
+        </div>
+        <div class="connector" [class.active]="progress >= 2"></div>
+        <div class="step" [class.active]="progress >= 2" [class.completed]="progress > 2">
+          <span>2</span>
+          <p>Détails</p>
+        </div>
+        <div class="connector" [class.active]="progress >= 3"></div>
+        <div class="step" [class.active]="progress >= 3">
+          <span>3</span>
+          <p>Confirmation</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="payment-content">
+      <!-- Étape 1 : Sélection de la méthode -->
+      <div class="payment-step" *ngIf="progress === 1" data-aos="fade-right">
+        <h2>Choisissez votre méthode de paiement</h2>
+        <div class="payment-methods">
+          <div *ngFor="let method of paymentMethods" 
+               class="method-card" 
+               [class.selected]="selectedMethod === method.id"
+               (click)="selectPayment(method.id)">
+            <i class="fas {{ method.icon }}"></i>
+            <h3>{{ method.name }}</h3>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Étape 2 : Détails de paiement -->
+      <div class="payment-step" *ngIf="progress === 2" data-aos="fade-left">
+        <div class="payment-grid">
+          <div class="payment-form">
+            <h2>Détails de paiement</h2>
+            
+            <form [formGroup]="paymentForm">
+              <div class="form-group">
+                <label for="cardNumber">Numéro de carte</label>
+                <input type="text" id="cardNumber" formControlName="cardNumber" 
+                       placeholder="1234 5678 9012 3456" maxlength="16">
+                <div class="error-message" *ngIf="f['cardNumber'].hasError('required') && f['cardNumber'].touched">
+                  Numéro de carte requis
+                </div>
+                <div class="error-message" *ngIf="f['cardNumber'].hasError('pattern') && f['cardNumber'].touched">
+                  Numéro de carte invalide
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="cardName">Nom sur la carte</label>
+                <input type="text" id="cardName" formControlName="cardName" 
+                       placeholder="MOHAMED BEN ALI">
+                <div class="error-message" *ngIf="f['cardName'].hasError('required') && f['cardName'].touched">
+                  Nom requis
+                </div>
+              </div>
+  
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="expiryDate">Date d'expiration</label>
+                  <input type="text" id="expiryDate" formControlName="expiryDate" 
+                         placeholder="MM/AA" maxlength="5">
+                  <div class="error-message" *ngIf="f['expiryDate'].hasError('required') && f['expiryDate'].touched">
+                    Date requise
+                  </div>
+                  <div class="error-message" *ngIf="f['expiryDate'].hasError('pattern') && f['expiryDate'].touched">
+                    Format MM/AA
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label for="cvv">CVV</label>
+                  <input type="text" id="cvv" formControlName="cvv" 
+                         placeholder="123" maxlength="3">
+                  <div class="error-message" *ngIf="f['cvv'].hasError('required') && f['cvv'].touched">
+                    CVV requis
+                  </div>
+                  <div class="error-message" *ngIf="f['cvv'].hasError('pattern') && f['cvv'].touched">
+                    3 chiffres requis
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group remember">
+                <label>
+                  <input type="checkbox" formControlName="rememberCard">
+                  Enregistrer cette carte pour des paiements futurs
+                </label>
+              </div>
+            </form>
+          </div>
+  
+          <div class="trip-summary" data-aos="zoom-in">
+            <h2>Récapitulatif du trajet</h2>
+            <div class="summary-card">
+              <div class="trip-route">
+                <span class="from">{{ tripDetails.from }}</span>
+                <i class="fas fa-arrow-right"></i>
+                <span class="to">{{ tripDetails.to }}</span>
+              </div>
+              
+              <div class="trip-details">
+                <p><i class="fas fa-calendar-alt"></i> {{ tripDetails.date }} à {{ tripDetails.time }}</p>
+                <p><i class="fas fa-user"></i> {{ tripDetails.driver }}</p>
+                <p><i class="fas fa-car"></i> {{ tripDetails.car }}</p>
+                <p><i class="fas fa-chair"></i> {{ tripDetails.seats }} place(s)</p>
+              </div>
+  
+              <div class="price-section">
+                <div class="price-details">
+                  <span>Prix total:</span>
+                  <span class="price">{{ tripDetails.price }} TND</span>
+                </div>
+                <div class="tax-info">
+                  <small>Inclus 0.500 TND de frais de service</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <button class="confirm-btn" (click)="confirmPayment()" [disabled]="paymentForm.invalid">
+          Payer maintenant
+        </button>
+      </div>
+  
+      <!-- Étape 3 : Confirmation -->
+      <div class="payment-step confirmation" *ngIf="progress === 3" data-aos="zoom-in">
+        <div class="loading-animation">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <h2>Traitement de votre paiement</h2>
+        <p>Veuillez patienter pendant que nous validons votre transaction.</p>
+        <div class="payment-graphic">
+          <div class="credit-card">
+            <div class="card-chip"></div>
+            <div class="card-number">•••• •••• •••• 3456</div>
+            <div class="card-footer">
+              <div class="card-name">MOHAMED BEN ALI</div>
+              <div class="card-expiry">12/25</div>
+            </div>
+            <div class="wave-animation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

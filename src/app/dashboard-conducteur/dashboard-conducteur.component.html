@@ -1,0 +1,58 @@
+<div class="driver-dashboard">
+  <h1><i class="fas fa-tachometer-alt"></i> Tableau de Bord Conducteur</h1>
+
+  <section class="stats-panel">
+    <div class="card stat">
+      <i class="fas fa-car-side icon"></i>
+      <div>
+        <h3>{{ proposedTrips.length }}</h3>
+        <p>Trajets proposés</p>
+      </div>
+    </div>
+    <div class="card stat">
+      <i class="fas fa-user-clock icon"></i>
+      <div>
+        <h3>{{ tripRequests.length }}</h3>
+        <p>Demandes en attente</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="propose-section">
+    <h2><i class="fas fa-plus-circle"></i> Proposer un Trajet</h2>
+    <button routerLink="/proposer-trajet" class="propose-btn">
+      <i class="fas fa-plus"></i> Proposer un Trajet
+    </button>
+  </section>
+
+  <section class="my-trips-section">
+    <h2><i class="fas fa-route"></i> Mes Trajets</h2>
+    <div *ngFor="let trip of proposedTrips" class="trip-card">
+      <div class="trip-info">
+        <h3>{{ trip.from }} → {{ trip.to }}</h3>
+        <p><i class="fas fa-calendar-alt"></i> {{ trip.date }} | <i class="fas fa-chair"></i> {{ trip.seats }} places</p>
+        <span class="status-badge" [class.active]="trip.status === 'active'">
+          {{ trip.status === 'active' ? 'Actif' : 'Terminé' }}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="requests-section">
+    <h2><i class="fas fa-user-friends"></i> Demandes en Attente</h2>
+    <div *ngFor="let request of tripRequests" class="request-card">
+      <div class="request-info">
+        <h3>{{ request.passenger }}</h3>
+        <p>Trajet: {{ request.trip }} | Places: {{ request.seats }}</p>
+      </div>
+      <div class="request-actions">
+        <button (click)="respondToRequest(request.id, true)" class="accept-btn">
+          <i class="fas fa-check"></i> Accepter
+        </button>
+        <button (click)="respondToRequest(request.id, false)" class="reject-btn">
+          <i class="fas fa-times"></i> Refuser
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

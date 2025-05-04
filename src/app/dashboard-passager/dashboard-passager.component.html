@@ -1,0 +1,33 @@
+<div class="passenger-dashboard">
+  <h1>👤 Tableau de Bord Passager</h1>
+
+  <section class="search-section">
+    <h2><i class="fas fa-search"></i> Rechercher un Trajet</h2>
+    <div class="search-form">
+      <input [(ngModel)]="searchParams.from" placeholder="Départ (ex: Tunis)" />
+      <input [(ngModel)]="searchParams.to" placeholder="Arrivée (ex: Sousse)" />
+      <input [(ngModel)]="searchParams.date" type="date" />
+      <button (click)="searchTrips()" class="search-btn">
+        <i class="fas fa-search"></i> Rechercher
+      </button>
+    </div>
+  </section>
+
+  <section class="trips-section">
+    <h2><i class="fas fa-route"></i> Trajets Disponibles</h2>
+    <div class="trip-card" *ngFor="let trip of availableTrips">
+      <div class="trip-info">
+        <h3>{{ trip.from }} → {{ trip.to }}</h3>
+        <p><i class="fas fa-calendar-alt"></i> {{ trip.date }} à {{ trip.time }}</p>
+        <p><i class="fas fa-user"></i> {{ trip.driver }}</p>
+        <p><i class="fas fa-chair"></i> {{ trip.seats }} places disponibles</p>
+      </div>
+      <div class="trip-price">
+        <span>{{ trip.price }} TND</span>
+        <button (click)="bookTrip(trip.id)" class="book-btn">
+          <i class="fas fa-ticket-alt"></i> Réserver
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
