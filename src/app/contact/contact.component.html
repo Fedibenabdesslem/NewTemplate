@@ -1,0 +1,92 @@
+<div class="contact-container">
+    <!-- Bouton principal avec animation 3D -->
+    <div class="contact-btn-3d" (click)="toggleContactMenu()">
+      <div class="btn-inner">
+        <i class="fas fa-comments"></i>
+        <span>Contact Express</span>
+      </div>
+      <div class="hover-effect"></div>
+    </div>
+  
+    <!-- Panneau dépliant -->
+    <div class="contact-panel" [class.active]="isContactOpen">
+      <div class="panel-header">
+        <h3>Comment pouvons-nous vous aider ?</h3>
+        <div class="close-btn" (click)="toggleContactMenu()">×</div>
+      </div>
+  
+      <div class="contact-methods">
+        <!-- Option 1 : Appel instantané -->
+        <div class="method-card" (click)="startCall()">
+          <div class="method-icon pulse">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <div class="method-content">
+            <h4>Appel Immédiat</h4>
+            <p>+216 70 123 456</p>
+            <div class="availability-badge">
+              <span class="dot"></span> Disponible maintenant
+            </div>
+          </div>
+          <div class="method-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+  
+        <!-- Option 2 : Chat en direct -->
+        <div class="method-card" (click)="openChat()">
+          <div class="method-icon">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <div class="method-content">
+            <h4>Chat en Direct</h4>
+            <p>Réponse en < 2 minutes</p>
+            <div class="typing-indicator">
+              <span>Agent disponible</span>
+              <div class="typing-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="method-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+  
+        <!-- Option 3 : Réseaux sociaux -->
+        <div class="social-methods">
+          <h4>Contactez-nous via :</h4>
+          <div class="social-icons">
+            <a href="#" class="social-icon whatsapp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="#" class="social-icon messenger">
+              <i class="fab fa-facebook-messenger"></i>
+            </a>
+            <a href="#" class="social-icon instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Carte de visite virtuelle -->
+      <div class="virtual-card">
+        <div class="card-bg"></div>
+        <div class="card-content">
+          <h4>Covoiturage Tunisie</h4>
+          <p>Service Client Premium</p>
+          <div class="card-contacts">
+            <p><i class="fas fa-envelope"></i> contact.covoiturage.tn</p>
+            <p><i class="fas fa-map-marker-alt"></i> Tunis, Centre Urbain Nord</p>
+          </div>
+          <div class="qr-code">
+            <img src="/code-qr.png" alt="QR Code Contact">
+            <p>Scannez pour nous contacter</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

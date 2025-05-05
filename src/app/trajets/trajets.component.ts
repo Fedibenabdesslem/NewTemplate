@@ -1,65 +1,88 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-trajet',
   standalone: true,
-  imports: [CommonModule, RouterModule,RouterLink],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './trajets.component.html',
-  styleUrls: ['./trajets.component.css']
+  styleUrls: ['./trajets.component.css'],
 })
-export class TrajetComponent {
+export class TrajetsComponent implements OnInit {
   trajets = [
     {
       id: 1,
-      depart: 'Paris',
-      arrivee: 'Lyon',
+      depart: 'Tunis',
+      arrivee: 'Sousse',
       date: '2023-12-15',
       heure: '08:00',
       places: 3,
-      prix: 25,
+      prix: 15,
       conducteur: {
-        nom: 'Jean D.',
-        note: 4.8,
-        avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        nom: 'Mohamed S.',
+        note: 4.7,
+        avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+        vehicule: 'Peugeot 208 (Noire)',
+        conforts: ['climatisation', 'wifi', 'bagages']
       },
-      vehicule: 'Peugeot 308 (Noire)'
+      popularite: 85 // Nouveau: indicateur de popularité
     },
     {
       id: 2,
-      depart: 'Marseille',
-      arrivee: 'Nice',
+      depart: 'Sfax',
+      arrivee: 'Djerba',
       date: '2023-12-16',
-      heure: '09:30',
+      heure: '10:30',
       places: 2,
-      prix: 15,
-      conducteur: {
-        nom: 'Marie L.',
-        note: 4.9,
-        avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
-      },
-      vehicule: 'Renault Clio (Blanche)'
-    },
-    {
-      id: 3,
-      depart: 'Bordeaux',
-      arrivee: 'Toulouse',
-      date: '2023-12-17',
-      heure: '14:00',
-      places: 4,
       prix: 20,
       conducteur: {
-        nom: 'Pierre M.',
-        note: 4.7,
-        avatar: 'https://randomuser.me/api/portraits/men/75.jpg'
+        nom: 'Amina K.',
+        note: 4.9,
+        avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+        vehicule: 'Hyundai i20 (Blanche)',
+        conforts: ['climatisation', 'animaux']
       },
-      vehicule: 'Citroën C4 (Bleue)'
+      popularite: 92
     }
   ];
 
+  villesTunisiennes = [
+    'Tunis', 'Sousse', 'Sfax', 'Djerba', 
+    'Nabeul', 'Bizerte', 'Monastir', 'Kairouan'
+  ];
+
+  searchParams = {
+    depart: '',
+    arrivee: '',
+    date: '',
+    conforts: []
+  };
+
+  ngOnInit(): void {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+  }
+
   reserverTrajet(trajetId: number) {
     console.log(`Réservation du trajet ${trajetId}`);
-    // Ici vous pourriez ajouter la logique de navigation vers la page de réservation
+    // Animation de confirmation
+    const card = document.querySelector(`.trajet-card[data-id="${trajetId}"]`);
+    card?.classList.add('reserved');
+    setTimeout(() => {
+      card?.classList.remove('reserved');
+    }, 2000);
+  }
+
+  getPopulariteColor(pourcentage: number): string {
+    if (pourcentage > 85) return '#2ecc71'; // Vert
+    if (pourcentage > 70) return '#f39c12'; // Orange
+    return '#e74c3c'; // Rouge
   }
 }

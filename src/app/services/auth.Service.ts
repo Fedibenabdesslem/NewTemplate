@@ -1,37 +1,54 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
+// Define the LoginResponse interface
+interface LoginResponse {
+  token: string;
+  // Add other properties if needed
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  isLoggedIn$ = this.isLoggedInSubject.asObservable();
+ private apiUrl = 'http://localhost:8085/auth';
 
-  constructor(private router: Router) {}
+ constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): void {
-    // Ici, vous implémenteriez la logique de connexion réelle
-    // Pour l'exemple, nous simulons une connexion réussie
-    this.isLoggedInSubject.next(true);
-    this.router.navigate(['/']);
+ // Appelle /auth/signup
+ register(user: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/signup`, user, {
+    responseType: 'text' as 'json'
+  });
+ }
+  
+  
+  // Connexion
+  login(email: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/signin`, {
+      email,
+      password
+    });
   }
 
-  register(userData: any): void {
-    // Logique d'inscription
-    this.isLoggedInSubject.next(true);
-    this.router.navigate(['/']);
+  // Utilitaire pour stocker et récupérer le token
+  saveToken(token: string) {
+    localStorage.setItem('token', token);
   }
 
-  logout(): void {
-    this.isLoggedInSubject.next(false);
-    this.router.navigate(['/login']);
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
-  checkAuthStatus(): void {
-    // Vérifier le statut d'authentification (par exemple avec un token)
-    const isLoggedIn = /* votre logique de vérification */ false;
-    this.isLoggedInSubject.next(isLoggedIn);
+  logout() {
+    localStorage.removeItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }
+
+

@@ -1,156 +1,188 @@
-<div class="payment-container" data-aos="fade-in">
-    <div class="payment-header">
-      <h1>Paiement sécurisé</h1>
-      <div class="progress-steps">
-        <div class="step" [class.active]="progress >= 1" [class.completed]="progress > 1">
-          <span>1</span>
-          <p>Méthode</p>
+<div class="payment-container">
+  <div class="payment-header">
+    <h1>Paiement Sécurisé</h1>
+    <div class="progress-steps">
+      <div class="step" [class.active]="true">
+        <div class="step-number">1</div>
+        <p>Méthode</p>
+      </div>
+      <div class="connector" [class.active]="true"></div>
+      <div class="step" [class.active]="true">
+        <div class="step-number">2</div>
+        <p>Paiement</p>
+      </div>
+      <div class="connector"></div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <p>Confirmation</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-content">
+    <div class="payment-methods">
+      <div *ngFor="let method of paymentMethods" 
+           class="method-card" 
+           [class.active]="activePaymentMethod === method.id"
+           (click)="selectPaymentMethod(method.id)"
+           [style.border-color]="method.color">
+        <div class="method-icon" [style.background]="method.color">
+          <i class="fas {{ method.icon }}"></i>
         </div>
-        <div class="connector" [class.active]="progress >= 2"></div>
-        <div class="step" [class.active]="progress >= 2" [class.completed]="progress > 2">
-          <span>2</span>
-          <p>Détails</p>
+        <h3>{{ method.name }}</h3>
+      </div>
+    </div>
+
+    <div class="payment-details">
+      <div class="card-preview" [@cardFlip]="cardSide">
+        <!-- Face avant -->
+        <div class="card-front" *ngIf="cardSide === 'front'">
+          <div class="card-logo">
+            <img src="/mastercard.png" alt="Carte Bancaire">
+          </div>
+          <div class="card-number">
+            {{ paymentForm.value.cardNumber || '•••• •••• •••• ••••' }}
+          </div>
+          <div class="card-footer">
+            <div class="card-name">
+              {{ paymentForm.value.cardName || 'NOM PRENOM' }}
+            </div>
+            <div class="card-expiry">
+              {{ paymentForm.value.expiryDate || 'MM/AA' }}
+            </div>
+          </div>
         </div>
-        <div class="connector" [class.active]="progress >= 3"></div>
-        <div class="step" [class.active]="progress >= 3">
-          <span>3</span>
-          <p>Confirmation</p>
+
+        <!-- Face arrière -->
+        <div class="card-back" *ngIf="cardSide === 'back'">
+          <div class="card-stripe"></div>
+          <div class="card-cvv">
+            <div class="cvv-label">CVV</div>
+            <div class="cvv-value">
+              {{ paymentForm.value.cvv || '•••' }}
+            </div>
+          </div>
+          <div class="card-logo-back">
+            <img src="/mastercard.png" alt="Carte Bancaire">
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-form">
+        <div class="form-group">
+          <label>Numéro de carte</label>
+          <input type="text" 
+                 formControlName="cardNumber" 
+                 (input)="formatCardNumber($event)"
+                 placeholder="1234 5678 9012 3456"
+                 maxlength="19">
+        </div>
+
+        <div class="form-group">
+          <label>Nom sur la carte</label>
+          <input type="text" 
+                 formControlName="cardName" 
+                 placeholder="MOHAMED BEN ALI">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date d'expiration</label>
+            <input type="text" 
+                   formControlName="expiryDate" 
+                   placeholder="MM/AA"
+                   maxlength="5">
+          </div>
+
+          <div class="form-group cvv-group">
+            <label>
+              <span>CVV</span>
+              <i class="fas fa-question-circle" 
+                 (mouseenter)="showCvvHelp()" 
+                 (mouseleave)="showCvvHint = false"></i>
+              <div class="cvv-hint" *ngIf="showCvvHint">
+                <img src="assets/cvv-hint.png" alt="Localisation CVV">
+                <p>3 chiffres au dos de votre carte</p>
+              </div>
+            </label>
+            <input type="text" 
+                   formControlName="cvv" 
+                   placeholder="123"
+                   maxlength="4"
+                   (focus)="toggleCardSide()"
+                   (blur)="toggleCardSide()">
+          </div>
+        </div>
+
+        <div class="form-group remember">
+          <label>
+            <input type="checkbox" formControlName="saveCard">
+            Enregistrer cette carte pour mes prochains paiements
+          </label>
+        </div>
+
+        <div class="security-badges">
+          <div class="badge">
+            <i class="fas fa-lock"></i>
+            <span>Paiement 100% sécurisé</span>
+          </div>
+          <div class="badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Cryptage SSL</span>
+          </div>
         </div>
       </div>
     </div>
-  
-    <div class="payment-content">
-      <!-- Étape 1 : Sélection de la méthode -->
-      <div class="payment-step" *ngIf="progress === 1" data-aos="fade-right">
-        <h2>Choisissez votre méthode de paiement</h2>
-        <div class="payment-methods">
-          <div *ngFor="let method of paymentMethods" 
-               class="method-card" 
-               [class.selected]="selectedMethod === method.id"
-               (click)="selectPayment(method.id)">
-            <i class="fas {{ method.icon }}"></i>
-            <h3>{{ method.name }}</h3>
-          </div>
-        </div>
+
+    <div class="order-summary">
+      <h3>Récapitulatif de votre trajet</h3>
+      <div class="summary-item">
+        <span>Tunis → Sousse</span>
+        <span>15/12/2023 à 08:00</span>
       </div>
-  
-      <!-- Étape 2 : Détails de paiement -->
-      <div class="payment-step" *ngIf="progress === 2" data-aos="fade-left">
-        <div class="payment-grid">
-          <div class="payment-form">
-            <h2>Détails de paiement</h2>
-            
-            <form [formGroup]="paymentForm">
-              <div class="form-group">
-                <label for="cardNumber">Numéro de carte</label>
-                <input type="text" id="cardNumber" formControlName="cardNumber" 
-                       placeholder="1234 5678 9012 3456" maxlength="16">
-                <div class="error-message" *ngIf="f['cardNumber'].hasError('required') && f['cardNumber'].touched">
-                  Numéro de carte requis
-                </div>
-                <div class="error-message" *ngIf="f['cardNumber'].hasError('pattern') && f['cardNumber'].touched">
-                  Numéro de carte invalide
-                </div>
-              </div>
-  
-              <div class="form-group">
-                <label for="cardName">Nom sur la carte</label>
-                <input type="text" id="cardName" formControlName="cardName" 
-                       placeholder="MOHAMED BEN ALI">
-                <div class="error-message" *ngIf="f['cardName'].hasError('required') && f['cardName'].touched">
-                  Nom requis
-                </div>
-              </div>
-  
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="expiryDate">Date d'expiration</label>
-                  <input type="text" id="expiryDate" formControlName="expiryDate" 
-                         placeholder="MM/AA" maxlength="5">
-                  <div class="error-message" *ngIf="f['expiryDate'].hasError('required') && f['expiryDate'].touched">
-                    Date requise
-                  </div>
-                  <div class="error-message" *ngIf="f['expiryDate'].hasError('pattern') && f['expiryDate'].touched">
-                    Format MM/AA
-                  </div>
-                </div>
-  
-                <div class="form-group">
-                  <label for="cvv">CVV</label>
-                  <input type="text" id="cvv" formControlName="cvv" 
-                         placeholder="123" maxlength="3">
-                  <div class="error-message" *ngIf="f['cvv'].hasError('required') && f['cvv'].touched">
-                    CVV requis
-                  </div>
-                  <div class="error-message" *ngIf="f['cvv'].hasError('pattern') && f['cvv'].touched">
-                    3 chiffres requis
-                  </div>
-                </div>
-              </div>
-  
-              <div class="form-group remember">
-                <label>
-                  <input type="checkbox" formControlName="rememberCard">
-                  Enregistrer cette carte pour des paiements futurs
-                </label>
-              </div>
-            </form>
-          </div>
-  
-          <div class="trip-summary" data-aos="zoom-in">
-            <h2>Récapitulatif du trajet</h2>
-            <div class="summary-card">
-              <div class="trip-route">
-                <span class="from">{{ tripDetails.from }}</span>
-                <i class="fas fa-arrow-right"></i>
-                <span class="to">{{ tripDetails.to }}</span>
-              </div>
-              
-              <div class="trip-details">
-                <p><i class="fas fa-calendar-alt"></i> {{ tripDetails.date }} à {{ tripDetails.time }}</p>
-                <p><i class="fas fa-user"></i> {{ tripDetails.driver }}</p>
-                <p><i class="fas fa-car"></i> {{ tripDetails.car }}</p>
-                <p><i class="fas fa-chair"></i> {{ tripDetails.seats }} place(s)</p>
-              </div>
-  
-              <div class="price-section">
-                <div class="price-details">
-                  <span>Prix total:</span>
-                  <span class="price">{{ tripDetails.price }} TND</span>
-                </div>
-                <div class="tax-info">
-                  <small>Inclus 0.500 TND de frais de service</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <button class="confirm-btn" (click)="confirmPayment()" [disabled]="paymentForm.invalid">
-          Payer maintenant
-        </button>
+      <div class="summary-item">
+        <span>Conducteur</span>
+        <span>Mohamed S. ★4.7</span>
       </div>
-  
-      <!-- Étape 3 : Confirmation -->
-      <div class="payment-step confirmation" *ngIf="progress === 3" data-aos="zoom-in">
-        <div class="loading-animation">
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
+      <div class="summary-item">
+        <span>Véhicule</span>
+        <span>Peugeot 208 (Noire)</span>
+      </div>
+      <div class="price-breakdown">
+        <div class="breakdown-item">
+          <span>Prix du trajet</span>
+          <span>12.50 TND</span>
         </div>
-        <h2>Traitement de votre paiement</h2>
-        <p>Veuillez patienter pendant que nous validons votre transaction.</p>
-        <div class="payment-graphic">
-          <div class="credit-card">
-            <div class="card-chip"></div>
-            <div class="card-number">•••• •••• •••• 3456</div>
-            <div class="card-footer">
-              <div class="card-name">MOHAMED BEN ALI</div>
-              <div class="card-expiry">12/25</div>
-            </div>
-            <div class="wave-animation"></div>
-          </div>
+        <div class="breakdown-item">
+          <span>Frais de service</span>
+          <span>2.50 TND</span>
+        </div>
+        <div class="breakdown-item total">
+          <span>Total à payer</span>
+          <span>15.00 TND</span>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="payment-footer">
+    <button class="back-btn" routerLink="/trajet">
+      <i class="fas fa-arrow-left"></i> Retour
+    </button>
+    <button class="pay-btn" 
+            (click)="processPayment()"
+            [disabled]="paymentForm.invalid || paymentStatus === 'processing'">
+      <span *ngIf="paymentStatus !== 'processing'">
+        <i class="fas fa-lock"></i> Payer maintenant
+      </span>
+      <span *ngIf="paymentStatus === 'processing'">
+        <i class="fas fa-spinner fa-spin"></i> Traitement...
+      </span>
+    </button>
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="progress-bar" *ngIf="paymentStatus === 'processing'">
+    <div class="progress-fill" [@progressBar]="progressState"></div>
+  </div>
+</div>
