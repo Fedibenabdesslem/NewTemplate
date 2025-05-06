@@ -39,22 +39,11 @@ export class LoginComponent {
       
       const { email, password } = this.loginForm.value;
       
-      this.authService.login(email, password)
-        .pipe(
-          catchError((error) => {
-            // Gestion des erreurs
-            this.errorMessage = error.error?.message || 'Une erreur est survenue lors de la connexion';
-            return of(null); // Retourne un Observable null pour continuer le flux
-          }),
-          finalize(() => {
-            this.isLoading = false;
-          })
-        )
-        .subscribe((response) => {
+      this.authService.login(email, password) .subscribe((response) => {
           if (response) {
             // Si la connexion réussit
             this.authService.saveToken(response.token); // Sauvegarde le token
-            this.router.navigate(['/dashboard']); // Redirige vers le dashboard
+          //  this.router.navigate(['/dashboard']); // Redirige vers le dashboard
           }
         });
     }
