@@ -1,19 +1,20 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { TrajetsComponent } from './trajets/trajets.component';
+
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { PassengerDashboardComponent } from './dashboard-passager/dashboard-passager.component';
 import { DashboardConducteurComponent } from './dashboard-conducteur/dashboard-conducteur.component';
 import { RegisterComponent } from './register/register.component';
 import { ProposerTrajetComponent } from './proposer-tarjet/proposer-tarjet.component';
 import { AuthGuard } from './guards/auth.guard'; // Importez le AuthGuard
+import { TrajetsComponent } from './trajets/trajets.component';
 
 export const routes: Routes = [
   // Routes publiques
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'trajets', component: TrajetsComponent },
+  { path: 'trajets', component:TrajetsComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   

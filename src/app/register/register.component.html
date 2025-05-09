@@ -79,7 +79,12 @@
         <label class="terms-label">
           <input type="checkbox" formControlName="agreeTerms"
                  [class.invalid]="f['agreeTerms'].invalid && f['agreeTerms'].touched" />
-          <span>J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a></span>
+          <span>
+            J'accepte les 
+            <a href="javascript:void(0)" (click)="openModal()">conditions d'utilisation</a> 
+            et la 
+            <a href="javascript:void(0)" (click)="openModal()">politique de confidentialité</a>
+          </span>
         </label>
         <div class="error-message" *ngIf="f['agreeTerms'].touched && f['agreeTerms'].errors?.['required']">Vous devez accepter les conditions</div>
       </div>
@@ -94,5 +99,8 @@
     <div class="login-link">
       Déjà membre ? <a routerLink="/login">Connectez-vous</a>
     </div>
+
+    <!-- Modale Conditions/Confidentialité -->
+    <app-terms-conditions *ngIf="showModal" (close)="closeModal()"></app-terms-conditions>
   </div>
 </div>

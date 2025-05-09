@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.Service'; // Adjusted to match the correct relative file path
+import { AuthService } from '../services/auth.Service';
 import { HttpClientModule } from '@angular/common/http';
+import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, CommonModule, HttpClientModule],
+  imports: [ReactiveFormsModule, RouterModule, CommonModule, HttpClientModule, TermsConditionsComponent],
   providers: [AuthService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
@@ -16,6 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
 export class RegisterComponent {
   registerForm: FormGroup;
   isSubmitting = false;
+  showModal = false;
+
   userTypes = [
     { value: 'PASSAGER', label: 'Passager' },
     { value: 'CONDUCTEUR', label: 'Conducteur' }
@@ -73,6 +76,14 @@ export class RegisterComponent {
         }
       });
     }
+  }
+
+  openModal() {
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 
   get f() { return this.registerForm.controls; }

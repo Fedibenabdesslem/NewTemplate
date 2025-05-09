@@ -1,36 +1,43 @@
+// src/app/components/proposer-trajet/proposer-trajet.component.ts
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Trajet, TrajetService } from '../services/tarjet.service';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-proposer-trajet',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './proposer-tarjet.component.html',
-  styleUrls: ['./proposer-tarjet.component.css']
+  styleUrls: ['./proposer-tarjet.component.css'],
+  imports: [ReactiveFormsModule,CommonModule]
 })
 export class ProposerTrajetComponent {
   trajetForm: FormGroup;
+  successMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private trajetService: TrajetService) {
     this.trajetForm = this.fb.group({
-      from: ['', Validators.required],
-      to: ['', Validators.required],
+      conducteurId: [1, Validators.required], // ID simulé pour l'exemple
+      depart: ['', Validators.required],
+      destination: ['', Validators.required],
       date: ['', Validators.required],
-      time: ['', Validators.required],
-      seats: [1, [Validators.required, Validators.min(1)]],
-      price: [0, [Validators.required, Validators.min(1)]]
+      heure: ['', Validators.required],
+      nombreDePlaces: [1, [Validators.required, Validators.min(1)]],
+      prix: [0, [Validators.required, Validators.min(0)]],
+      description: ['']
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.trajetForm.valid) {
-      const newTrip = this.trajetForm.value;
-      console.log('Nouveau trajet proposé :', newTrip);
-      alert("Trajet proposé avec succès !");
-      this.trajetForm.reset();
-    } else {
-      alert("Veuillez remplir tous les champs requis.");
+      const trajet: Trajet = this.trajetForm.value;
+      this.trajetService.proposerTrajet(trajet).subscribe({
+        next: (response) => {
+          this.successMessage = 'Trajet proposé avec succès !';
+          this.trajetForm.reset({ conducteurId: 1 });
+        },
+        error: (err) => console.error('Erreur lors de la proposition :', err)
+      });
     }
   }
 }

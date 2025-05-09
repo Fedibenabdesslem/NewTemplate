@@ -46,6 +46,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/signin`, { email, password }).pipe(
       tap(response => {
         const token = response.token || response;
+        localStorage.setItem('token',token);
         const decoded = this.decodeToken(token);
   
         const userData: User = {
@@ -57,8 +58,9 @@ export class AuthService {
         this.saveToken(token);
         this.currentUserSubject.next(userData);
         console.log('Decoded user:', userData);
-  
+        localStorage.setItem('userId', decoded.userId); // Stocker l'ID de l'utilisateur dans le localStorage
         // Redirect based on role
+
         this.redirectBasedOnRole(userData.role);
       })
     );
@@ -103,7 +105,7 @@ export class AuthService {
   }
 
   // Les méthodes suivantes restent identiques
-  saveToken(token: string): void { /* ... */ }
+  saveToken(token: string): void { localStorage.setItem('authToken', token); }
   getToken(): string | null {
     return localStorage.getItem('authToken');
   }
