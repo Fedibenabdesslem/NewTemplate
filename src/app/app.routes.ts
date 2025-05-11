@@ -22,6 +22,13 @@ export const routes: Routes = [
     loadComponent: () => import('./reservation/reservation.component').then(m => m.ReservationComponent)},
   {path: 'trajet/:id',
     loadComponent: () => import('./trajet-details/trajet-details.component').then(m => m.TrajetDetailsComponent)},
+
+    // app.routes.ts ou app-routing.module.ts
+{
+  path: 'edit-trajet/:id',
+  loadComponent: () => import('./edit-trajet/edit-trajet.component').then(m => m.EditTrajetComponent)
+},
+
   // Routes protégées avec contrôle de rôle
   { 
     path: 'admin', 

@@ -30,6 +30,10 @@ export class TrajetService {
     return this.http.get<Trajet[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }
 
+  getTrajetById(id: number): Observable<Trajet> {
+    return this.http.get<Trajet>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
   // 👤 Récupérer les trajets du conducteur connecté
   getTrajetsByConducteur(): Observable<Trajet[]> {
     return this.http.get<Trajet[]>(`${this.apiUrl}/mes-trajets`, { headers: this.getAuthHeaders() });
@@ -39,4 +43,13 @@ export class TrajetService {
   supprimerTrajet(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
+
+  modifierTrajet(id: number, trajet: any): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+  return this.http.put(`${this.apiUrl}/${id}`, trajet, { headers });
+}
+
+
 }

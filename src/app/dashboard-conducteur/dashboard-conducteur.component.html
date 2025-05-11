@@ -20,8 +20,17 @@
             <p><strong>Places:</strong> {{ trajet.availableSeats }}</p>
           </div>
           <div class="actions">
-            <button (click)="modifierTrajet(trajet)">Modifier</button>
-            <button *ngIf="trajet.id !== undefined" (click)="supprimerTrajet(trajet.id)">Supprimer</button>
+           <button [routerLink]="['/edit-trajet', trajet.id]" class="btn btn-primary">
+  ✏️ Modifier
+</button>
+
+             <button *ngIf="trajet.id !== undefined"
+        (click)="supprimerTrajet(trajet.id)"
+        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  🗑️ Supprimer
+</button>
+
+           
           </div>
         </div>
       </div>
