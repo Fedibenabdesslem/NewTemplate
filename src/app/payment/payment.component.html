@@ -1,188 +1,41 @@
 <div class="payment-container">
   <div class="payment-header">
-    <h1>Paiement Sécurisé</h1>
-    <div class="progress-steps">
-      <div class="step" [class.active]="true">
-        <div class="step-number">1</div>
-        <p>Méthode</p>
-      </div>
-      <div class="connector" [class.active]="true"></div>
-      <div class="step" [class.active]="true">
-        <div class="step-number">2</div>
-        <p>Paiement</p>
-      </div>
-      <div class="connector"></div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <p>Confirmation</p>
-      </div>
-    </div>
+    <h2>Effectuer votre paiement</h2>
+    <p>Veuillez entrer vos informations de paiement ci-dessous pour finaliser la réservation.</p>
   </div>
 
-  <div class="payment-content">
-    <div class="payment-methods">
-      <div *ngFor="let method of paymentMethods" 
-           class="method-card" 
-           [class.active]="activePaymentMethod === method.id"
-           (click)="selectPaymentMethod(method.id)"
-           [style.border-color]="method.color">
-        <div class="method-icon" [style.background]="method.color">
-          <i class="fas {{ method.icon }}"></i>
-        </div>
-        <h3>{{ method.name }}</h3>
+  <form (ngSubmit)="effectuerPaiement()">
+    <div class="form-group">
+      <label for="cardNumber">Numéro de carte :</label>
+      <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half">
+        <label for="expDate">Date d'expiration :</label>
+        <input type="text" id="expDate" name="expDate" placeholder="MM/AA" required />
+      </div>
+
+      <div class="form-group half">
+        <label for="cvv">CVV :</label>
+        <input type="text" id="cvv" name="cvv" placeholder="123" required />
       </div>
     </div>
 
-    <div class="payment-details">
-      <div class="card-preview" [@cardFlip]="cardSide">
-        <!-- Face avant -->
-        <div class="card-front" *ngIf="cardSide === 'front'">
-          <div class="card-logo">
-            <img src="/mastercard.png" alt="Carte Bancaire">
-          </div>
-          <div class="card-number">
-            {{ paymentForm.value.cardNumber || '•••• •••• •••• ••••' }}
-          </div>
-          <div class="card-footer">
-            <div class="card-name">
-              {{ paymentForm.value.cardName || 'NOM PRENOM' }}
-            </div>
-            <div class="card-expiry">
-              {{ paymentForm.value.expiryDate || 'MM/AA' }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Face arrière -->
-        <div class="card-back" *ngIf="cardSide === 'back'">
-          <div class="card-stripe"></div>
-          <div class="card-cvv">
-            <div class="cvv-label">CVV</div>
-            <div class="cvv-value">
-              {{ paymentForm.value.cvv || '•••' }}
-            </div>
-          </div>
-          <div class="card-logo-back">
-            <img src="/mastercard.png" alt="Carte Bancaire">
-          </div>
-        </div>
-      </div>
-
-      <div class="payment-form">
-        <div class="form-group">
-          <label>Numéro de carte</label>
-          <input type="text" 
-                 formControlName="cardNumber" 
-                 (input)="formatCardNumber($event)"
-                 placeholder="1234 5678 9012 3456"
-                 maxlength="19">
-        </div>
-
-        <div class="form-group">
-          <label>Nom sur la carte</label>
-          <input type="text" 
-                 formControlName="cardName" 
-                 placeholder="MOHAMED BEN ALI">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Date d'expiration</label>
-            <input type="text" 
-                   formControlName="expiryDate" 
-                   placeholder="MM/AA"
-                   maxlength="5">
-          </div>
-
-          <div class="form-group cvv-group">
-            <label>
-              <span>CVV</span>
-              <i class="fas fa-question-circle" 
-                 (mouseenter)="showCvvHelp()" 
-                 (mouseleave)="showCvvHint = false"></i>
-              <div class="cvv-hint" *ngIf="showCvvHint">
-                <img src="assets/cvv-hint.png" alt="Localisation CVV">
-                <p>3 chiffres au dos de votre carte</p>
-              </div>
-            </label>
-            <input type="text" 
-                   formControlName="cvv" 
-                   placeholder="123"
-                   maxlength="4"
-                   (focus)="toggleCardSide()"
-                   (blur)="toggleCardSide()">
-          </div>
-        </div>
-
-        <div class="form-group remember">
-          <label>
-            <input type="checkbox" formControlName="saveCard">
-            Enregistrer cette carte pour mes prochains paiements
-          </label>
-        </div>
-
-        <div class="security-badges">
-          <div class="badge">
-            <i class="fas fa-lock"></i>
-            <span>Paiement 100% sécurisé</span>
-          </div>
-          <div class="badge">
-            <i class="fas fa-shield-alt"></i>
-            <span>Cryptage SSL</span>
-          </div>
-        </div>
-      </div>
+    <div class="form-group">
+      <label for="cardHolder">Titulaire de la carte :</label>
+      <input type="text" id="cardHolder" name="cardHolder" placeholder="Nom du titulaire" required />
     </div>
 
-    <div class="order-summary">
-      <h3>Récapitulatif de votre trajet</h3>
-      <div class="summary-item">
-        <span>Tunis → Sousse</span>
-        <span>15/12/2023 à 08:00</span>
-      </div>
-      <div class="summary-item">
-        <span>Conducteur</span>
-        <span>Mohamed S. ★4.7</span>
-      </div>
-      <div class="summary-item">
-        <span>Véhicule</span>
-        <span>Peugeot 208 (Noire)</span>
-      </div>
-      <div class="price-breakdown">
-        <div class="breakdown-item">
-          <span>Prix du trajet</span>
-          <span>12.50 TND</span>
-        </div>
-        <div class="breakdown-item">
-          <span>Frais de service</span>
-          <span>2.50 TND</span>
-        </div>
-        <div class="breakdown-item total">
-          <span>Total à payer</span>
-          <span>15.00 TND</span>
-        </div>
-      </div>
+    <div class="form-group">
+      <label for="billingAddress">Adresse de facturation :</label>
+      <input type="text" id="billingAddress" name="billingAddress" placeholder="Adresse" required />
     </div>
-  </div>
+
+    <button type="submit" class="btn-payment">Payer maintenant</button>
+  </form>
 
   <div class="payment-footer">
-    <button class="back-btn" routerLink="/trajet">
-      <i class="fas fa-arrow-left"></i> Retour
-    </button>
-    <button class="pay-btn" 
-            (click)="processPayment()"
-            [disabled]="paymentForm.invalid || paymentStatus === 'processing'">
-      <span *ngIf="paymentStatus !== 'processing'">
-        <i class="fas fa-lock"></i> Payer maintenant
-      </span>
-      <span *ngIf="paymentStatus === 'processing'">
-        <i class="fas fa-spinner fa-spin"></i> Traitement...
-      </span>
-    </button>
-  </div>
-
-  <!-- Barre de progression -->
-  <div class="progress-bar" *ngIf="paymentStatus === 'processing'">
-    <div class="progress-fill" [@progressBar]="progressState"></div>
+    <p>En effectuant un paiement, vous acceptez nos <a href="#">termes et conditions</a>.</p>
   </div>
 </div>

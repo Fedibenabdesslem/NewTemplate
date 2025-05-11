@@ -1,0 +1,23 @@
+<div class="container">
+  <h2>Liste des Trajets Disponibles</h2>
+
+  <div *ngIf="loading" class="loading">Chargement...</div>
+  <div *ngIf="!loading && trajets.length === 0" class="empty">Aucun trajet trouvé.</div>
+
+  <div *ngIf="trajets.length > 0" class="trajet-grid">
+    <div *ngFor="let trajet of trajets" class="trajet-card">
+      <h3>{{ trajet.startLocation }} ➜ {{ trajet.endLocation }}</h3>
+      <p><strong>Départ :</strong> {{ trajet.departureTime | date:'full' }}</p>
+      <p><strong>Places disponibles :</strong> {{ trajet.availableSeats }}</p>
+      <p><strong>Bagages :</strong> {{ trajet.allowsLuggage ? 'Oui' : 'Non' }}</p>
+      <p><strong>Musique :</strong> {{ trajet.allowsMusic ? 'Oui' : 'Non' }}</p>
+      <p class="date">Ajouté le {{ trajet.createdAt | date:'short' }}</p>
+
+      <!-- Bouton Réserver ou Détails -->
+      <div class="btn-container">
+        <button class="btn-reserver" (click)="reserverTrajet(trajet)">Réserver ce trajet</button>
+        <button class="btn-details" (click)="voirDetails(trajet)">Voir les détails</button>
+      </div>
+    </div>
+  </div>
+</div>

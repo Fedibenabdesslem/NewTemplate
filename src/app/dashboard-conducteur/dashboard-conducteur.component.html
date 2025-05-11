@@ -1,58 +1,36 @@
-<div class="driver-dashboard">
-  <h1><i class="fas fa-tachometer-alt"></i> Tableau de Bord Conducteur</h1>
+<div class="dashboard-container">
+  <div class="sidebar">
+    <h2>Mon Espace Conducteur</h2>
+    <ul>
+      <li (click)="section = 'trajets'">Mes trajets</li>
+      <li (click)="section = 'proposer'">Proposer un trajet</li>
+      <li (click)="section = 'stats'">Statistiques</li>
+    </ul>
+  </div>
 
-  <section class="stats-panel">
-    <div class="card stat">
-      <i class="fas fa-car-side icon"></i>
-      <div>
-        <h3>{{ proposedTrips.length }}</h3>
-        <p>Trajets proposés</p>
+  <div class="main-content">
+    <ng-container [ngSwitch]="section">
+      <div *ngSwitchCase="'trajets'">
+        <h3>Mes trajets</h3>
+        <div *ngFor="let trajet of trajets" class="trajet-card">
+          <div class="infos">
+            <p><strong>Départ:</strong> {{ trajet.startLocation }}</p>
+            <p><strong>Arrivée:</strong> {{ trajet.endLocation }}</p>
+            <p><strong>Date:</strong> {{ trajet.departureTime | date }}</p>
+            <p><strong>Places:</strong> {{ trajet.availableSeats }}</p>
+          </div>
+          <div class="actions">
+            <button (click)="modifierTrajet(trajet)">Modifier</button>
+            <button *ngIf="trajet.id !== undefined" (click)="supprimerTrajet(trajet.id)">Supprimer</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="card stat">
-      <i class="fas fa-user-clock icon"></i>
-      <div>
-        <h3>{{ tripRequests.length }}</h3>
-        <p>Demandes en attente</p>
-      </div>
-    </div>
-  </section>
 
-  <section class="propose-section">
-    <h2><i class="fas fa-plus-circle"></i> Proposer un Trajet</h2>
-    <button routerLink="/proposer-trajet" class="propose-btn">
-      <i class="fas fa-plus"></i> Proposer un Trajet
-    </button>
-  </section>
+      <div *ngSwitchCase="'proposer'">
+        <app-proposer-trajet (trajetCree)="rafraichirTrajets()"></app-proposer-trajet>
+      </div>
 
-  <section class="my-trips-section">
-    <h2><i class="fas fa-route"></i> Mes Trajets</h2>
-    <div *ngFor="let trip of proposedTrips" class="trip-card">
-      <div class="trip-info">
-        <h3>{{ trip.from }} → {{ trip.to }}</h3>
-        <p><i class="fas fa-calendar-alt"></i> {{ trip.date }} | <i class="fas fa-chair"></i> {{ trip.seats }} places</p>
-        <span class="status-badge" [class.active]="trip.status === 'active'">
-          {{ trip.status === 'active' ? 'Actif' : 'Terminé' }}
-        </span>
-      </div>
-    </div>
-  </section>
-
-  <section class="requests-section">
-    <h2><i class="fas fa-user-friends"></i> Demandes en Attente</h2>
-    <div *ngFor="let request of tripRequests" class="request-card">
-      <div class="request-info">
-        <h3>{{ request.passenger }}</h3>
-        <p>Trajet: {{ request.trip }} | Places: {{ request.seats }}</p>
-      </div>
-      <div class="request-actions">
-        <button (click)="respondToRequest(request.id, true)" class="accept-btn">
-          <i class="fas fa-check"></i> Accepter
-        </button>
-        <button (click)="respondToRequest(request.id, false)" class="reject-btn">
-          <i class="fas fa-times"></i> Refuser
-        </button>
-      </div>
-    </div>
-  </section>
+      
+    </ng-container>
+  </div>
 </div>
