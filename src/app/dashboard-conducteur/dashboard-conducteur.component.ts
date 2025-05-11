@@ -1,35 +1,39 @@
+import { Component, OnInit } from '@angular/core';
+import { TrajetService } from '../services/tarjet.service';
+import { Trajet } from '../models/trajet'; // Assurez-vous que le chemin est correct
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ProposerTrajetComponent } from "../proposer-tarjet/proposer-tarjet.component";
 
 @Component({
-  selector: 'app-driver-dashboard',
-  standalone: true,
-  imports: [CommonModule,RouterLink],
+  selector: 'app-conducteur-dashboard',
   templateUrl: './dashboard-conducteur.component.html',
   styleUrls: ['./dashboard-conducteur.component.css'],
+  imports: [CommonModule, ProposerTrajetComponent],
 })
-export class DashboardConducteurComponent {
-  proposedTrips = [
-    { id: 1, from: 'Tunis', to: 'Sousse', date: '2025-05-10', seats: 3, status: 'active' },
-    { id: 2, from: 'Sfax', to: 'Djerba', date: '2025-05-15', seats: 2, status: 'completed' }
-  ];
+export class ConducteurDashboardComponent implements OnInit {
+  section = 'trajets';
+  trajets: Trajet[] = [];
 
-  tripRequests = [
-    { id: 1, passenger: 'Ahmed Ben Ali', trip: 'Tunis → Sousse', seats: 1 },
-    { id: 2, passenger: 'Fatma Ksouri', trip: 'Sfax → Djerba', seats: 2 }
-  ];
+  constructor(private trajetService: TrajetService) {}
 
-  proposeTrip() {
-    alert("Redirection vers le formulaire de création de trajet.");
+  ngOnInit(): void {
+  this.rafraichirTrajets();
+}
+
+rafraichirTrajets() {
+  this.trajetService.getTrajetsByConducteur().subscribe(data => {
+    this.trajets = data;
+  });
+}
+
+  modifierTrajet(trajet: Trajet) {
+    // logiques pour ouvrir un formulaire de modification
+    console.log('Modifier trajet:', trajet);
   }
 
-  respondToRequest(requestId: number, accepted: boolean) {
-    if (accepted) {
-      alert('Demande acceptée.');
-    } else {
-      alert('Demande refusée.');
-    }
-    this.tripRequests = this.tripRequests.filter(req => req.id !== requestId);
+  supprimerTrajet(id: number) {
+    this.trajetService.supprimerTrajet(id).subscribe(() => {
+      this.rafraichirTrajets();
+    });
   }
 }
