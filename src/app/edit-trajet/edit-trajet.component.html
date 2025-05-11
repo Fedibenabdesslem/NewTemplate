@@ -1,0 +1,41 @@
+<div class="edit-container">
+  <div class="card">
+    <h2>✏️ Modifier le trajet</h2>
+
+    <form [formGroup]="trajetForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="startLocation">📍 Départ</label>
+        <input id="startLocation" formControlName="startLocation" placeholder="Ex: Paris" required />
+      </div>
+
+      <div class="form-group">
+        <label for="endLocation">📍 Destination</label>
+        <input id="endLocation" formControlName="endLocation" placeholder="Ex: Lyon" required />
+      </div>
+
+      <div class="form-group">
+        <label for="departureTime">🕒 Date & Heure de départ</label>
+        <input id="departureTime" type="datetime-local" formControlName="departureTime" required />
+      </div>
+
+      <div class="form-group">
+        <label for="availableSeats">🚗 Places disponibles</label>
+        <input id="availableSeats" type="number" formControlName="availableSeats" min="1" required />
+      </div>
+
+      <div class="form-check">
+        <input id="allowsLuggage" type="checkbox" formControlName="allowsLuggage" />
+        <label for="allowsLuggage">🎒 Bagages autorisés</label>
+      </div>
+
+      <div class="form-check">
+        <input id="allowsMusic" type="checkbox" formControlName="allowsMusic" />
+        <label for="allowsMusic">🎵 Musique autorisée</label>
+      </div>
+
+      <button class="update-button" type="submit" [disabled]="trajetForm.invalid">
+        💾 Mettre à jour
+      </button>
+    </form>
+  </div>
+</div>
