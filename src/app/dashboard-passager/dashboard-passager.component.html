@@ -1,33 +1,55 @@
-<div class="passenger-dashboard">
-  <h1>👤 Tableau de Bord Passager</h1>
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>👤 Espace Passager</h2>
+    <ul>
+      <li [class.active]="section === 'trajets'" (click)="section = 'trajets'">🚗 Trajets proposés</li>
+      <li [class.active]="section === 'reclamation'" (click)="section = 'reclamation'">✉️ Réclamation</li>
+    </ul>
+  </aside>
 
-  <section class="search-section">
-    <h2><i class="fas fa-search"></i> Rechercher un Trajet</h2>
-    <div class="search-form">
-      <input [(ngModel)]="searchParams.from" placeholder="Départ (ex: Tunis)" />
-      <input [(ngModel)]="searchParams.to" placeholder="Arrivée (ex: Sousse)" />
-      <input [(ngModel)]="searchParams.date" type="date" />
-      <button (click)="searchTrips()" class="search-btn">
-        <i class="fas fa-search"></i> Rechercher
-      </button>
-    </div>
-  </section>
+  <!-- Contenu principal -->
+  <main class="main-content">
+    <ng-container [ngSwitch]="section">
+      
+      <!-- TRAJETS -->
+      <section *ngSwitchCase="'trajets'">
+        <h3>🚗 Trajets proposés</h3>
+          <div class="dashboard-buttons">
+            <button class="btn btn-primary" routerLink="/trajets">🔍 Voir tous les trajets</button>
+          </div>
+        </section>
 
-  <section class="trips-section">
-    <h2><i class="fas fa-route"></i> Trajets Disponibles</h2>
-    <div class="trip-card" *ngFor="let trip of availableTrips">
-      <div class="trip-info">
-        <h3>{{ trip.from }} → {{ trip.to }}</h3>
-        <p><i class="fas fa-calendar-alt"></i> {{ trip.date }} à {{ trip.time }}</p>
-        <p><i class="fas fa-user"></i> {{ trip.driver }}</p>
-        <p><i class="fas fa-chair"></i> {{ trip.seats }} places disponibles</p>
-      </div>
-      <div class="trip-price">
-        <span>{{ trip.price }} TND</span>
-        <button (click)="bookTrip(trip.id)" class="book-btn">
-          <i class="fas fa-ticket-alt"></i> Réserver
-        </button>
-      </div>
-    </div>
-  </section>
-</div>
+        
+        
+
+      <!-- RÉCLAMATION -->
+      <section *ngSwitchCase="'reclamation'">
+        <h3>📩 Réclamation</h3>
+
+        <div *ngIf="selectedTrajet" class="reclamation-form">
+          <h4>Réclamation pour : {{ selectedTrajet.startLocation }} → {{ selectedTrajet.endLocation }}</h4>
+
+          <textarea
+            [(ngModel)]="reclamationMessage"
+            placeholder="Écrivez votre réclamation ici..."
+            rows="4"
+          ></textarea>
+
+          <div class="form-buttons">
+            <button (click)="sendReclamation()" class="btn btn-send">Envoyer</button>
+            <button (click)="cancelReclamation()" class="btn btn-cancel">Annuler</button>
+          </div>
+
+          <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
+          <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+        </div>
+
+        <div *ngIf="!selectedTrajet">
+          <p>Sélectionnez un trajet pour faire une réclamation.</p>
+        </div>
+      </section>
+
+  
+    </ng-container>
+    </main>

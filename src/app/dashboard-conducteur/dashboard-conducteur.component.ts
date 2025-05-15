@@ -19,8 +19,8 @@ export class ConducteurDashboardComponent implements OnInit {
   section: 'trajets' | 'proposer' | 'stats' = 'trajets';
   trajets: Trajet[] = [];
 
-  topTrajets: any[] = [];
-  trajetsPasses: any[] = [];
+  topTrajets: Trajet[] = [];
+  trajetsPasses: Trajet[] = [];
 
   barChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
@@ -59,24 +59,30 @@ export class ConducteurDashboardComponent implements OnInit {
 
   chargerStatistiques(): void {
     const conducteurId = Number(localStorage.getItem('userId'));
-    if (!conducteurId) return;
+    if (!conducteurId) {
+      console.error('ID du conducteur non trouvé.');
+      return;
+    }
 
     this.statisticsService.getConducteurStatistics(conducteurId).subscribe(data => {
       this.topTrajets = data.topTrajets || [];
       this.trajetsPasses = data.trajetsPasses || [];
 
       this.barChartData = {
-        labels: this.topTrajets.map((trajet, index) => `Trajet ${index + 1}`),
+        labels: this.topTrajets.map((trajet, index) =>
+          `${trajet.startLocation} → ${trajet.endLocation}`
+        ),
         datasets: [{
-          data: this.topTrajets.map(trajet => trajet.availableSeats || 0),
+          data: this.topTrajets.map(trajet => trajet.availableSeats ?? 0),
           label: 'Places disponibles',
           backgroundColor: '#42A5F5'
         }]
       };
-      console.log(this.barChartData);
+
       console.log('BarChart labels', this.barChartData.labels);
       console.log('BarChart data', this.barChartData.datasets[0]?.data);
-      
+    }, error => {
+      console.error('Erreur de récupération des statistiques', error);
     });
   }
 }

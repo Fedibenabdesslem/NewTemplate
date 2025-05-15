@@ -11,7 +11,7 @@
   <main class="main-content">
     <ng-container [ngSwitch]="section">
       
-      <!-- MES TRAJETS -->
+      <!-- 🚗 MES TRAJETS -->
       <section *ngSwitchCase="'trajets'">
         <h3>📅 Mes trajets</h3>
         <div *ngIf="trajets.length; else noTrajets">
@@ -31,30 +31,33 @@
         <ng-template #noTrajets><p>Aucun trajet trouvé.</p></ng-template>
       </section>
 
-      <!-- PROPOSER -->
+      <!-- ➕ PROPOSER UN TRAJET -->
       <section *ngSwitchCase="'proposer'">
         <h3>➕ Proposer un trajet</h3>
         <app-proposer-trajet (trajetCree)="rafraichirTrajets()"></app-proposer-trajet>
       </section>
 
-      <!-- STATISTIQUES -->
+      <!-- 📊 STATISTIQUES -->
       <section *ngSwitchCase="'stats'" class="stats-section">
         <h3>📊 Statistiques</h3>
 
-        <div *ngIf="barChartData?.datasets?.length">
+        <!-- Graphique des top trajets -->
+        <div class="chart-container" *ngIf="barChartData?.datasets?.length">
           <canvas baseChart
-        [data]="barChartData"
-        [options]="barChartOptions"
-        [type]="'bar'">
-        </canvas>
-
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="'bar'">
+          </canvas>
         </div>
 
+        <!-- Résumé des statistiques -->
         <div class="stats-summary">
           <h4>🚗 Top trajets</h4>
           <ul *ngIf="topTrajets.length; else noTop">
             <li *ngFor="let trajet of topTrajets">
-              {{ trajet.startLocation }} → {{ trajet.endLocation }} ({{ trajet.departureTime | date:'shortDate' }})
+              {{ trajet.startLocation }} → {{ trajet.endLocation }}
+              ({{ trajet.departureTime | date:'shortDate' }})
+              - {{ trajet.availableSeats }} places
             </li>
           </ul>
           <ng-template #noTop><p>Aucun top trajet.</p></ng-template>
@@ -62,7 +65,8 @@
           <h4>📁 Trajets passés</h4>
           <ul *ngIf="trajetsPasses.length; else noPast">
             <li *ngFor="let trajet of trajetsPasses">
-              {{ trajet.startLocation }} → {{ trajet.endLocation }} ({{ trajet.departureTime | date:'shortDate' }})
+              {{ trajet.startLocation }} → {{ trajet.endLocation }}
+              ({{ trajet.departureTime | date:'shortDate' }})
             </li>
           </ul>
           <ng-template #noPast><p>Aucun trajet passé.</p></ng-template>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Trajet } from '../models/trajet'; // ✅ Assure-toi que ce chemin est correct
+import { Trajet } from '../models/trajet'; 
 import { TrajetUserDto } from '../models/TrajetUserDto';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class TrajetService {
 
   constructor(private http: HttpClient) {}
 
-  // 🔐 Récupération du token JWT depuis le localStorage
+  
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     return new HttpHeaders({
@@ -21,12 +21,12 @@ export class TrajetService {
     });
   }
 
-  // 📤 Proposer un nouveau trajet
+  
   proposerTrajet(trajet: Trajet): Observable<Trajet> {
     return this.http.post<Trajet>(this.apiUrl, trajet, { headers: this.getAuthHeaders() });
   }
 
-  // 📥 Récupérer tous les trajets (pour les passagers par exemple)
+  
   getTrajets(): Observable<Trajet[]> {
     return this.http.get<Trajet[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }

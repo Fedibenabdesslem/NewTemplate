@@ -3,12 +3,13 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
-import { PassengerDashboardComponent } from './dashboard-passager/dashboard-passager.component';
+
 import { RegisterComponent } from './register/register.component';
 import { ProposerTrajetComponent } from './proposer-tarjet/proposer-tarjet.component';
 import { AuthGuard } from './guards/auth.guard'; // Importez le AuthGuard
 import { ListeTrajetsComponent } from './liste-trajets/liste-trajets.component';
 import { ConducteurDashboardComponent } from './dashboard-conducteur/dashboard-conducteur.component';
+import { DashboardPassagerComponent } from './dashboard-passager/dashboard-passager.component';
 
 
 export const routes: Routes = [
@@ -23,7 +24,7 @@ export const routes: Routes = [
   {path: 'trajet/:id',
     loadComponent: () => import('./trajet-details/trajet-details.component').then(m => m.TrajetDetailsComponent)},
 
-    // app.routes.ts ou app-routing.module.ts
+  
 {
   path: 'edit-trajet/:id',
   loadComponent: () => import('./edit-trajet/edit-trajet.component').then(m => m.EditTrajetComponent)
@@ -48,7 +49,7 @@ export const routes: Routes = [
   },
   { 
     path: 'passager', 
-    component: PassengerDashboardComponent,
+    component: DashboardPassagerComponent,
     canActivate: [AuthGuard],
     data: { 
       role: 'passager',

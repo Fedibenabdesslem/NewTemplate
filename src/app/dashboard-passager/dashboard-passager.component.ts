@@ -1,34 +1,82 @@
+import { Component, OnInit } from '@angular/core';
+
+import { ReclamationService } from '../services/reclamation.service';
+import { Trajet } from '../models/trajet';
+import { Reclamation } from '../models/reclamation';
+import { TrajetService } from '../services/tarjet.service';
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormsModule, NgModel } from '@angular/forms';
+import { routes } from '../app.routes';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-passenger-dashboard',
+  selector: 'app-dashboard-passager',
   templateUrl: './dashboard-passager.component.html',
   styleUrls: ['./dashboard-passager.component.css'],
-  imports: [FormsModule,CommonModule],
+  imports: [CommonModule,FormsModule,RouterModule],
 })
-export class PassengerDashboardComponent {
-  constructor(private router: Router
+export class DashboardPassagerComponent implements OnInit {
+  trajets: Trajet[] = [];
+  reclamationMessage: string = '';
+  selectedTrajet?: Trajet;
+  successMessage: string = '';
+  errorMessage: string = '';
+  section: 'trajets' | 'reclamation' = 'trajets';
+
+
+  constructor(
+    private trajetService: TrajetService,
+    private reclamationService: ReclamationService
   ) {}
-  availableTrips = [
-    { id: 1, from: 'Tunis', to: 'Sousse', date: '15/12/2023', time: '08:00', driver: 'Mohamed Ali', seats: 3, price: 15 },
-    { id: 2, from: 'Sfax', to: 'Djerba', date: '18/12/2023', time: '14:30', driver: 'Ali Ben Amor', seats: 2, price: 20 }
-  ];
 
-  searchParams = {
-    from: '',
-    to: '',
-    date: ''
-  };
-
-  searchTrips() {
-    // TODO: Ajouter logique de recherche
-    alert('Recherche simulée !');
+  ngOnInit(): void {
+    this.loadTrajets();
   }
 
-  bookTrip(tripId: number) {
-    this.router.navigate(['/paiement'], { queryParams: { tripId } });
+  loadTrajets(): void {
+    this.trajetService.getTrajets().subscribe({
+      next: data => this.trajets = data,
+      error: err => console.error('Erreur chargement trajets', err)
+    });
+  }
+
+  openReclamationForm(trajet: Trajet): void {
+    this.selectedTrajet = trajet;
+    this.reclamationMessage = '';
+    this.successMessage = '';
+    this.errorMessage = '';
+  }
+
+  sendReclamation(): void {
+    if (!this.selectedTrajet) return;
+
+    const reclamation: Reclamation = {
+      trajetId: this.selectedTrajet.id!,
+      conducteurId: this.selectedTrajet.userId,
+      message: this.reclamationMessage.trim()
+    };
+
+    if (!reclamation.message) {
+      this.errorMessage = 'Veuillez écrire un message avant d’envoyer la réclamation.';
+      return;
+    }
+
+    this.reclamationService.sendReclamation(reclamation).subscribe({
+      next: () => {
+        this.successMessage = 'Réclamation envoyée avec succès.';
+        this.reclamationMessage = '';
+        this.selectedTrajet = undefined;
+      },
+      error: () => {
+        this.errorMessage = 'Erreur lors de l’envoi de la réclamation. Réessayez plus tard.';
+      }
+    });
+  }
+
+  cancelReclamation(): void {
+    this.selectedTrajet = undefined;
+    this.reclamationMessage = '';
+    this.successMessage = '';
+    this.errorMessage = '';
   }
 }

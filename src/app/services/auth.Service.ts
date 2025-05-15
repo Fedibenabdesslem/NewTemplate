@@ -78,7 +78,7 @@ export class AuthService {
   }
 
   private redirectBasedOnRole(role: string): void {
-    console.log('Redirecting based on role:', role); // Debugging line
+    console.log('Redirecting based on role:', role); 
     switch (role) {
       case 'admin':
         this.router.navigate(['/admin']);
@@ -87,8 +87,7 @@ export class AuthService {
         this.router.navigate(['/conducteur']);
         break;
       case 'passager':
-        console.log('Redirecting to passenger dashboard'); // Debugging line
-        this.router.navigate(['/passager']);
+        console.log('Redirecting to passenger dashboard'); 
         break;
       default:
         this.router.navigate(['/home']);
