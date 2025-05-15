@@ -1,40 +1,82 @@
 import { Component, OnInit } from '@angular/core';
-import { TrajetService } from '../services/tarjet.service';
-import { Trajet } from '../models/trajet'; // Assurez-vous que le chemin est correct
 import { CommonModule } from '@angular/common';
-import { ProposerTrajetComponent } from "../proposer-tarjet/proposer-tarjet.component";
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { TrajetService } from '../services/tarjet.service';
+import { StatisticsService } from '../services/statistics.service';
+import { Trajet } from '../models/trajet';
+import { ChartConfiguration } from 'chart.js';
+import { NgChartsModule } from 'ng2-charts';
+import { ProposerTrajetComponent } from '../proposer-tarjet/proposer-tarjet.component';
 
 @Component({
   selector: 'app-conducteur-dashboard',
+  standalone: true,
   templateUrl: './dashboard-conducteur.component.html',
   styleUrls: ['./dashboard-conducteur.component.css'],
-  imports: [CommonModule, ProposerTrajetComponent, RouterLink],
+  imports: [CommonModule, RouterModule, NgChartsModule, ProposerTrajetComponent],
 })
 export class ConducteurDashboardComponent implements OnInit {
-  section = 'trajets';
+  section: 'trajets' | 'proposer' | 'stats' = 'trajets';
   trajets: Trajet[] = [];
 
-  constructor(private trajetService: TrajetService) {}
+  topTrajets: any[] = [];
+  trajetsPasses: any[] = [];
+
+  barChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: [],
+    datasets: []
+  };
+
+  barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    plugins: {
+      legend: { display: true },
+      title: { display: true, text: 'Top trajets par places disponibles' }
+    }
+  };
+
+  constructor(
+    private trajetService: TrajetService,
+    private statisticsService: StatisticsService
+  ) {}
 
   ngOnInit(): void {
-  this.rafraichirTrajets();
-}
-
-rafraichirTrajets() {
-  this.trajetService.getTrajetsByConducteur().subscribe(data => {
-    this.trajets = data;
-  });
-}
-
-  modifierTrajet(trajet: Trajet) {
-    // logiques pour ouvrir un formulaire de modification
-    console.log('Modifier trajet:', trajet);
+    this.rafraichirTrajets();
+    this.chargerStatistiques();
   }
 
-  supprimerTrajet(id: number) {
+  rafraichirTrajets(): void {
+    this.trajetService.getTrajetsByConducteur().subscribe(data => {
+      this.trajets = data;
+    });
+  }
+
+  supprimerTrajet(id: number): void {
     this.trajetService.supprimerTrajet(id).subscribe(() => {
       this.rafraichirTrajets();
+    });
+  }
+
+  chargerStatistiques(): void {
+    const conducteurId = Number(localStorage.getItem('userId'));
+    if (!conducteurId) return;
+
+    this.statisticsService.getConducteurStatistics(conducteurId).subscribe(data => {
+      this.topTrajets = data.topTrajets || [];
+      this.trajetsPasses = data.trajetsPasses || [];
+
+      this.barChartData = {
+        labels: this.topTrajets.map((trajet, index) => `Trajet ${index + 1}`),
+        datasets: [{
+          data: this.topTrajets.map(trajet => trajet.availableSeats || 0),
+          label: 'Places disponibles',
+          backgroundColor: '#42A5F5'
+        }]
+      };
+      console.log(this.barChartData);
+      console.log('BarChart labels', this.barChartData.labels);
+      console.log('BarChart data', this.barChartData.datasets[0]?.data);
+      
     });
   }
 }

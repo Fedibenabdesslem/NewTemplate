@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class StatisticsService {
-  private apiUrl = 'http://localhost:8085/statistics'; // adapte selon ton backend
+  private apiUrl = 'http://localhost:8085/statistics'; 
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,6 @@ export class StatisticsService {
 
   getConducteurStatistics(conducteurId: number): Observable<any> {
     const params = new HttpParams().set('conducteurId', conducteurId.toString());
-    // Utilisation des backticks (``) pour l'interpolation de l'URL
     return this.http.get<any>(`${this.apiUrl}?conducteurId=${conducteurId}`, {
       headers: this.getAuthHeaders(),
       params: params
