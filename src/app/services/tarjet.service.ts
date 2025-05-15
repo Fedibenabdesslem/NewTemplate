@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Trajet } from '../models/trajet'; // ✅ Assure-toi que ce chemin est correct
+import { TrajetUserDto } from '../models/TrajetUserDto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +31,8 @@ export class TrajetService {
     return this.http.get<Trajet[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }
 
-  getTrajetById(id: number): Observable<Trajet> {
-    return this.http.get<Trajet>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  getTrajetById(id: number): Observable<TrajetUserDto> {
+    return this.http.get<TrajetUserDto>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
 
   // 👤 Récupérer les trajets du conducteur connecté
@@ -39,7 +40,7 @@ export class TrajetService {
     return this.http.get<Trajet[]>(`${this.apiUrl}/mes-trajets`, { headers: this.getAuthHeaders() });
   }
 
-  // ❌ Supprimer un trajet par ID
+ 
   supprimerTrajet(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }

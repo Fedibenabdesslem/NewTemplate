@@ -2,15 +2,17 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.Service';
 import { HttpClientModule } from '@angular/common/http';
+
 import { TermsConditionsComponent } from '../terms-conditions/terms-conditions.component';
+import { AuthService } from '../services/auth.Service';
+import { Role } from '../models/role';
+import { RegisterDto } from '../models/RegisterDto';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule, CommonModule, HttpClientModule, TermsConditionsComponent],
-  providers: [AuthService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -20,8 +22,8 @@ export class RegisterComponent {
   showModal = false;
 
   userTypes = [
-    { value: 'PASSAGER', label: 'Passager' },
-    { value: 'CONDUCTEUR', label: 'Conducteur' }
+    { value: Role.PASSAGER, label: 'Passager' },
+    { value: Role.CONDUCTEUR, label: 'Conducteur' }
   ];
 
   constructor(
@@ -34,11 +36,11 @@ export class RegisterComponent {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
-      userType: ['PASSAGER', Validators.required],
+      userType: [Role.PASSAGER, Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       agreeTerms: [false, Validators.requiredTrue]
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(formGroup: FormGroup) {
@@ -53,16 +55,18 @@ export class RegisterComponent {
 
       const formValues = this.registerForm.value;
 
-      const userData = {
-        nom: formValues.lastName,
-        prenom: formValues.firstName,
+      const registerDto: RegisterDto = {
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
         email: formValues.email,
+        phoneNumber: formValues.phone,
         password: formValues.password,
-        telephone: formValues.phone,
         userType: formValues.userType
       };
 
-      this.authService.register(userData).subscribe({
+      console.log('RegisterDto object:', registerDto);
+
+      this.authService.register(registerDto).subscribe({
         next: () => {
           alert('Inscription réussie !');
           this.router.navigate(['/login']);
@@ -70,6 +74,7 @@ export class RegisterComponent {
         error: (err) => {
           alert("Erreur lors de l'inscription.");
           console.error(err);
+          this.isSubmitting = false;
         },
         complete: () => {
           this.isSubmitting = false;
@@ -86,5 +91,7 @@ export class RegisterComponent {
     this.showModal = false;
   }
 
-  get f() { return this.registerForm.controls; }
+  get f() {
+    return this.registerForm.controls;
+  }
 }

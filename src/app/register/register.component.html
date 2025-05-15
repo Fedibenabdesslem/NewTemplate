@@ -7,20 +7,20 @@
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Nom et prénom -->
+      <!-- Prénom et Nom -->
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">Prénom</label>
-          <input id="firstName" type="text" formControlName="firstName" placeholder="Votre prénom"
-                 [class.invalid]="f['firstName'].invalid && f['firstName'].touched" />
+          <input id="firstName" type="text" formControlName="firstName" placeholder="Votre prénom" required
+                 [class.invalid]="f['firstName'].invalid && f['firstName'].touched">
           <div class="error-message" *ngIf="f['firstName'].touched && f['firstName'].errors?.['required']">Prénom requis</div>
           <div class="error-message" *ngIf="f['firstName'].touched && f['firstName'].errors?.['minlength']">Minimum 2 caractères</div>
         </div>
 
         <div class="form-group">
           <label for="lastName">Nom</label>
-          <input id="lastName" type="text" formControlName="lastName" placeholder="Votre nom"
-                 [class.invalid]="f['lastName'].invalid && f['lastName'].touched" />
+          <input id="lastName" type="text" formControlName="lastName" placeholder="Votre nom" required
+                 [class.invalid]="f['lastName'].invalid && f['lastName'].touched">
           <div class="error-message" *ngIf="f['lastName'].touched && f['lastName'].errors?.['required']">Nom requis</div>
           <div class="error-message" *ngIf="f['lastName'].touched && f['lastName'].errors?.['minlength']">Minimum 2 caractères</div>
         </div>
@@ -29,8 +29,8 @@
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="exemple@email.com"
-               [class.invalid]="f['email'].invalid && f['email'].touched" />
+        <input id="email" type="email" formControlName="email" placeholder="exemple@email.com" required
+               [class.invalid]="f['email'].invalid && f['email'].touched">
         <div class="error-message" *ngIf="f['email'].touched && f['email'].errors?.['required']">Email requis</div>
         <div class="error-message" *ngIf="f['email'].touched && f['email'].errors?.['email']">Format invalide</div>
       </div>
@@ -38,8 +38,8 @@
       <!-- Téléphone -->
       <div class="form-group">
         <label for="phone">Téléphone</label>
-        <input id="phone" type="tel" formControlName="phone" placeholder="12345678"
-               [class.invalid]="f['phone'].invalid && f['phone'].touched" />
+        <input id="phone" type="tel" formControlName="phone" placeholder="12345678" required
+               [class.invalid]="f['phone'].invalid && f['phone'].touched">
         <div class="error-message" *ngIf="f['phone'].touched && f['phone'].errors?.['required']">Téléphone requis</div>
         <div class="error-message" *ngIf="f['phone'].touched && f['phone'].errors?.['pattern']">8 chiffres requis</div>
       </div>
@@ -49,7 +49,7 @@
         <label>Je suis</label>
         <div class="user-type-options">
           <label *ngFor="let type of userTypes" class="user-type-option">
-            <input type="radio" formControlName="userType" [value]="type.value" />
+            <input type="radio" formControlName="userType" [value]="type.value" required />
             <span>{{ type.label }}</span>
           </label>
         </div>
@@ -59,16 +59,16 @@
       <div class="form-row">
         <div class="form-group">
           <label for="password">Mot de passe</label>
-          <input id="password" type="password" formControlName="password" placeholder="••••••••"
-                 [class.invalid]="f['password'].invalid && f['password'].touched" />
+          <input id="password" type="password" formControlName="password" placeholder="••••••••" required
+                 [class.invalid]="f['password'].invalid && f['password'].touched">
           <div class="error-message" *ngIf="f['password'].touched && f['password'].errors?.['required']">Mot de passe requis</div>
           <div class="error-message" *ngIf="f['password'].touched && f['password'].errors?.['minlength']">Minimum 6 caractères</div>
         </div>
 
         <div class="form-group">
           <label for="confirmPassword">Confirmer mot de passe</label>
-          <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••"
-                 [class.invalid]="(f['confirmPassword'].invalid && f['confirmPassword'].touched) || registerForm.hasError('mismatch')" />
+          <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" required
+                 [class.invalid]="(f['confirmPassword'].invalid && f['confirmPassword'].touched) || registerForm.hasError('mismatch')">
           <div class="error-message" *ngIf="f['confirmPassword'].touched && f['confirmPassword'].errors?.['required']">Confirmation requise</div>
           <div class="error-message" *ngIf="registerForm.hasError('mismatch') && f['confirmPassword'].touched">Les mots de passe ne correspondent pas</div>
         </div>
@@ -77,8 +77,8 @@
       <!-- Conditions -->
       <div class="form-group terms-group">
         <label class="terms-label">
-          <input type="checkbox" formControlName="agreeTerms"
-                 [class.invalid]="f['agreeTerms'].invalid && f['agreeTerms'].touched" />
+          <input type="checkbox" formControlName="agreeTerms" required
+                 [class.invalid]="f['agreeTerms'].invalid && f['agreeTerms'].touched">
           <span>
             J'accepte les 
             <a href="javascript:void(0)" (click)="openModal()">conditions d'utilisation</a> 
@@ -100,7 +100,7 @@
       Déjà membre ? <a routerLink="/login">Connectez-vous</a>
     </div>
 
-    <!-- Modale Conditions/Confidentialité -->
+    <!-- Modale Conditions -->
     <app-terms-conditions *ngIf="showModal" (close)="closeModal()"></app-terms-conditions>
   </div>
 </div>

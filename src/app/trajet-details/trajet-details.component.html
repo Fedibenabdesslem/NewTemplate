@@ -10,6 +10,10 @@
     <p><strong>Musique :</strong> {{ trajet.allowsMusic ? 'Oui' : 'Non' }}</p>
     <p><strong>Date de création :</strong> {{ trajet.createdAt | date:'short' }}</p>
 
-    <!-- Détails supplémentaires peuvent être ajoutés ici -->
+    <hr>
+
+    <h3>Informations du conducteur</h3>
+    <p><strong>Nom :</strong> {{ trajet.firstName }} {{ trajet.lastName }}</p>
+    <p><strong>Téléphone :</strong> {{ trajet.phoneNumber }}</p>
   </div>
 </div>

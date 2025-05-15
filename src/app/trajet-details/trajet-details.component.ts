@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrajetService } from '../services/tarjet.service';
-import { Trajet } from '../models/trajet'; // Assurez-vous que le chemin est correct
+import { Trajet } from '../models/trajet';
 import { CommonModule } from '@angular/common';
+import { TrajetUserDto } from '../models/TrajetUserDto';
 
 @Component({
   selector: 'app-trajet-details',
   templateUrl: './trajet-details.component.html',
   styleUrls: ['./trajet-details.component.css'],
+  standalone: true,
   imports: [CommonModule],
 })
 export class TrajetDetailsComponent implements OnInit {
-  trajet: Trajet | null = null;
+  trajet: TrajetUserDto | null = null;
   loading = true;
 
   constructor(
@@ -20,11 +22,14 @@ export class TrajetDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.trajetService.getTrajets().subscribe({
+    const idParam = this.route.snapshot.paramMap.get('id');
+
+    if (idParam) {
+      const id = parseInt(idParam, 10);
+
+      this.trajetService.getTrajetById(id).subscribe({
         next: (data) => {
-          this.trajet = data.find((trajet) => trajet.id === +id) || null;
+          this.trajet = data; // Si getTrajetById retourne UN trajet
           this.loading = false;
         },
         error: (err) => {
@@ -32,6 +37,9 @@ export class TrajetDetailsComponent implements OnInit {
           this.loading = false;
         }
       });
+    } else {
+      console.error('ID de trajet manquant ou invalide dans l’URL');
+      this.loading = false;
     }
   }
 }

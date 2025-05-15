@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { jwtDecode } from 'jwt-decode'; // À installer: npm install jwt-decode @types/jwt-decode
+import { jwtDecode } from 'jwt-decode'; 
+import { RegisterDto } from '../models/RegisterDto';
 
 interface User {
   token: string;
@@ -35,12 +36,12 @@ export class AuthService {
       }
     }
   }
-
-  register(user: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/signup`, user, {
-      responseType: 'text' as 'json'
-    });
+   register(registerDto: RegisterDto): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signup`, registerDto);
   }
+
+ 
+
 
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/signin`, { email, password }).pipe(
@@ -58,8 +59,8 @@ export class AuthService {
         this.saveToken(token);
         this.currentUserSubject.next(userData);
         console.log('Decoded user:', userData);
-        localStorage.setItem('userId', decoded.userId); // Stocker l'ID de l'utilisateur dans le localStorage
-        // Redirect based on role
+        localStorage.setItem('userId', decoded.userId);
+        
 
         this.redirectBasedOnRole(userData.role);
       })
