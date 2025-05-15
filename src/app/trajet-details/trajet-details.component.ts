@@ -35,6 +35,7 @@ export class TrajetDetailsComponent implements OnInit {
         error: (err) => {
           console.error('Erreur lors de la récupération du trajet', err);
           this.loading = false;
+          
         }
       });
     } else {

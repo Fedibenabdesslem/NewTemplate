@@ -87,7 +87,8 @@ export class AuthService {
         this.router.navigate(['/conducteur']);
         break;
       case 'passager':
-        console.log('Redirecting to passenger dashboard'); 
+        this.router.navigate(['/passager']); 
+        console.log('Redirecting to passager');
         break;
       default:
         this.router.navigate(['/home']);
