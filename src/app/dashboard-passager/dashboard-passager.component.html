@@ -6,6 +6,9 @@
       <li [class.active]="section === 'trajets'" (click)="section = 'trajets'">🚗 Trajets proposés</li>
       <li [class.active]="section === 'reclamation'" (click)="section = 'reclamation'">✉️ Réclamation</li>
     </ul>
+    <div class="logout-container">
+      <button class="btn logout-btn" (click)="logout()">🚪 Déconnexion</button>
+      </div>  
   </aside>
 
   <!-- Contenu principal -->

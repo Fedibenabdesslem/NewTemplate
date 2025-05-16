@@ -26,7 +26,8 @@ export class ProposerTrajetComponent {
       departureTime: ['', Validators.required],
       availableSeats: [1, [Validators.required, Validators.min(1)]],
       allowsLuggage: [false],
-      allowsMusic: [false]
+      allowsMusic: [false],
+      price: [0, [Validators.required, Validators.min(0)]]
     });
   }
 

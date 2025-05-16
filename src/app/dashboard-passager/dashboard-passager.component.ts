@@ -7,13 +7,13 @@ import { TrajetService } from '../services/tarjet.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { routes } from '../app.routes';
-import { RouterModule } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-passager',
   templateUrl: './dashboard-passager.component.html',
   styleUrls: ['./dashboard-passager.component.css'],
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule,FormsModule,RouterLink],
 })
 export class DashboardPassagerComponent implements OnInit {
   trajets: Trajet[] = [];
@@ -26,8 +26,13 @@ export class DashboardPassagerComponent implements OnInit {
 
   constructor(
     private trajetService: TrajetService,
-    private reclamationService: ReclamationService
+    private reclamationService: ReclamationService,
+    private router: Router
   ) {}
+  logout(): void {
+    localStorage.clear(); 
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit(): void {
     this.loadTrajets();

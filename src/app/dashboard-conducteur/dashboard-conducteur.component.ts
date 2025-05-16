@@ -7,7 +7,7 @@ import { Trajet } from '../models/trajet';
 import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { ProposerTrajetComponent } from '../proposer-tarjet/proposer-tarjet.component';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-conducteur-dashboard',
   standalone: true,
@@ -37,8 +37,13 @@ export class ConducteurDashboardComponent implements OnInit {
 
   constructor(
     private trajetService: TrajetService,
-    private statisticsService: StatisticsService
+    private statisticsService: StatisticsService,
+    private router: Router
   ) {}
+  logout(): void {
+  localStorage.clear(); // ou removeItem('token') / removeItem('userId') selon ce que tu stockes
+  this.router.navigate(['/login']);
+}
 
   ngOnInit(): void {
     this.rafraichirTrajets();

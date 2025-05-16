@@ -8,7 +8,7 @@ export interface TrajetUserDto {
 
   allowsLuggage: boolean;
   allowsMusic: boolean;
-
+  price: number;
   firstName: string;
   lastName: string;
   phoneNumber: string;

@@ -6,6 +6,10 @@
       <li [class.active]="section === 'proposer'" (click)="section = 'proposer'">➕ Proposer un trajet</li>
       <li [class.active]="section === 'stats'" (click)="section = 'stats'">📊 Statistiques</li>
     </ul>
+    <div class="logout-container">
+  <button class="btn logout-btn" (click)="logout()">🚪 Déconnexion</button>
+</div>
+
   </aside>
 
   <main class="main-content">
