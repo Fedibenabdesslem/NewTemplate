@@ -1,20 +1,41 @@
-<div class="trajet-details-container" *ngIf="trajet">
-  <h2>Détails du trajet {{ trajet.startLocation }} ➜ {{ trajet.endLocation }}</h2>
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Chargement en cours...</p>
+</div>
 
-  <div *ngIf="loading" class="loading">Chargement...</div>
+<div *ngIf="!loading && trajet" class="trajet-card">
+  <h2 class="title">Détails du trajet</h2>
 
-  <div class="trajet-details">
-    <p><strong>Départ :</strong> {{ trajet.departureTime | date:'full' }}</p>
-    <p><strong>Places disponibles :</strong> {{ trajet.availableSeats }}</p>
-    <p><strong>Bagages :</strong> {{ trajet.allowsLuggage ? 'Oui' : 'Non' }}</p>
-    <p><strong>Musique :</strong> {{ trajet.allowsMusic ? 'Oui' : 'Non' }}</p>
-    <p><strong>Date de création :</strong> {{ trajet.createdAt | date:'short' }}</p>
-    <p><strong>Prix :</strong> {{ trajet.price }} D</p> 
-
-    <hr>
-
-    <h3>Informations du conducteur</h3>
-    <p><strong>Nom :</strong> {{ trajet.firstName }} {{ trajet.lastName }}</p>
-    <p><strong>Téléphone :</strong> {{ trajet.phoneNumber }}</p>
+  <div class="trajet-info">
+    <div class="info-group">
+      <label>Départ :</label>
+      <span>{{ trajet.startLocation }}</span>
+    </div>
+    <div class="info-group">
+      <label>Arrivée :</label>
+      <span>{{ trajet.endLocation }}</span>
+    </div>
+    <div class="info-group">
+      <label>Date de départ :</label>
+      <span>{{ trajet.departureTime | date:'short' }}</span>
+    </div>
+    <div class="info-group">
+      <label>Places disponibles :</label>
+      <span>{{ trajet.availableSeats }}</span>
+    </div>
+    <div class="info-group">
+      <label>Prix :</label>
+      <span class="price">{{ trajet.price }} <small>TND</small></span>
+    </div>
   </div>
+
+  <h3 class="subtitle">Conducteur</h3>
+  <div class="driver-info">
+    <p><strong>Nom :</strong> {{ trajet.firstName }} {{ trajet.lastName }}</p>
+    <p><strong>Téléphone :</strong> <a href="tel:{{ trajet.phoneNumber }}">{{ trajet.phoneNumber }}</a></p>
+  </div>
+
+  <button class="btn btn-primary" (click)="payerEtTelechargerFacture()">
+    Payer et Télécharger la Facture
+  </button>
 </div>

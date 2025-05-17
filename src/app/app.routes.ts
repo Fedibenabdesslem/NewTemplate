@@ -64,12 +64,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard] 
   },
   
-  // Routes lazy-loaded
-  { 
-    path: 'payment', 
-    loadComponent: () => import('./payment/payment.component').then(m => m.PaymentComponent),
-    canActivate: [AuthGuard] 
-  },
+  
   { 
     path: 'contact', 
     loadComponent: () => import('./contact/contact.component').then(m => m.ContactHeaderComponent) 

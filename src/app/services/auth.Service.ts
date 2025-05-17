@@ -69,12 +69,12 @@ export class AuthService {
   
 
   private normalizeRole(role: string): 'admin' | 'passager' | 'conducteur' {
-    if (!role) return 'passager'; // Valeur par défaut
+    if (!role) return 'passager'; 
     
     const roleLower = role.toLowerCase();
     if (roleLower.includes('admin')) return 'admin';
     if (roleLower.includes('conducteur') || roleLower.includes('driver')) return 'conducteur';
-    return 'passager'; // Fallback
+    return 'passager'; 
   }
 
   private redirectBasedOnRole(role: string): void {

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrajetService } from '../services/tarjet.service';
-import { Trajet } from '../models/trajet';
 import { CommonModule } from '@angular/common';
 import { TrajetUserDto } from '../models/TrajetUserDto';
+
+
+import { FactureService } from '../services/factrure.service';
+import { AuthService } from '../services/auth.Service';
 
 @Component({
   selector: 'app-trajet-details',
@@ -18,7 +21,9 @@ export class TrajetDetailsComponent implements OnInit {
 
   constructor(
     private trajetService: TrajetService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private factureService: FactureService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -29,18 +34,27 @@ export class TrajetDetailsComponent implements OnInit {
 
       this.trajetService.getTrajetById(id).subscribe({
         next: (data) => {
-          this.trajet = data; // Si getTrajetById retourne UN trajet
+          this.trajet = data;
           this.loading = false;
         },
         error: (err) => {
           console.error('Erreur lors de la récupération du trajet', err);
           this.loading = false;
-          
         }
       });
     } else {
       console.error('ID de trajet manquant ou invalide dans l’URL');
       this.loading = false;
+    }
+  }
+
+  payerEtTelechargerFacture(): void {
+    const user = this.authService.getCurrentUser(); 
+    if (this.trajet && user) {
+      this.factureService.generateFacture(this.trajet, user);
+      alert('facture générée avec succès !');
+    } else {
+      alert('Impossible de générer la facture. Informations manquantes.');
     }
   }
 }

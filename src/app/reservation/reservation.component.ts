@@ -19,7 +19,7 @@ places: any;
   constructor(
     private trajetService: TrajetService,
     private route: ActivatedRoute,
-    private router: Router // Inject the Router service
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
