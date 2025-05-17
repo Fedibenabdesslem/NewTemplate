@@ -29,11 +29,7 @@ export class ListeTrajetsComponent implements OnInit {
     });
   }
 
-  reserverTrajet(trajet: Trajet): void {
-    // Rediriger vers une page de réservation
-    console.log('Réserver trajet', trajet);
-    this.router.navigate(['/reservation', trajet.id]); // Tu peux ajuster selon ta structure de routing
-  }
+  
 
   voirDetails(trajet: Trajet): void {
     // Rediriger vers la page des détails du trajet
