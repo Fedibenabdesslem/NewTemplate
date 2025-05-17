@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth.guard'; // Importez le AuthGuard
 import { ListeTrajetsComponent } from './liste-trajets/liste-trajets.component';
 import { ConducteurDashboardComponent } from './dashboard-conducteur/dashboard-conducteur.component';
 import { DashboardPassagerComponent } from './dashboard-passager/dashboard-passager.component';
+import { ReservationComponent } from './reservation/reservation.component';
 
 
 export const routes: Routes = [
@@ -19,8 +20,9 @@ export const routes: Routes = [
   { path: 'trajets', component:ListeTrajetsComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'reservation/:id',
-    loadComponent: () => import('./reservation/reservation.component').then(m => m.ReservationComponent)},
+  { path: 'reservation/:id', component: ReservationComponent },
+{ path: 'reservation', component: ReservationComponent },
+
   {path: 'trajet/:id',
     loadComponent: () => import('./trajet-details/trajet-details.component').then(m => m.TrajetDetailsComponent)},
 

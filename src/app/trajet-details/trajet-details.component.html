@@ -35,7 +35,10 @@
     <p><strong>Téléphone :</strong> <a href="tel:{{ trajet.phoneNumber }}">{{ trajet.phoneNumber }}</a></p>
   </div>
 
-  <button class="btn btn-primary" (click)="payerEtTelechargerFacture()">
-    Payer et Télécharger la Facture
-  </button>
+  <button
+  class="btn btn-primary"
+  [routerLink]="['/reservation', trajet.id]">
+  Payer et Télécharger la Facture
+</button>
+
 </div>

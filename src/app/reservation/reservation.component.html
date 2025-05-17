@@ -1,21 +1,9 @@
-<div class="reservation-container" *ngIf="trajet">
-  <h2>Réservation pour le trajet {{ trajet.startLocation }} ➜ {{ trajet.endLocation }}</h2>
+<div class="reservation-container">
+  <h2>Réserver un trajet</h2>
 
-  <div *ngIf="loading" class="loading">Chargement...</div>
+  <button class="btn btn-primary" (click)="reserver()" [disabled]="isLoading">
+    {{ isLoading ? 'Réservation en cours...' : 'Réserver' }}
+  </button>
 
-  <div class="trajet-details">
-    <p><strong>Départ :</strong> {{ trajet.departureTime | date:'full' }}</p>
-    <p><strong>Places disponibles :</strong> {{ trajet.availableSeats }}</p>
-    <p><strong>Bagages :</strong> {{ trajet.allowsLuggage ? 'Oui' : 'Non' }}</p>
-    <p><strong>Musique :</strong> {{ trajet.allowsMusic ? 'Oui' : 'Non' }}</p>
-
-    <!-- Formulaire de réservation -->
-    <form (ngSubmit)="reserver()">
-      <div class="form-group">
-        <label for="places">Nombre de places :</label>
-        <input type="number" id="places" [(ngModel)]="places" name="places" required />
-      </div>
-      <button type="submit" [disabled]="loading || places <= 0" class="btn-reserver" routerLink="payment">Réserver</button>
-    </form>
-  </div>
+  <p *ngIf="message" class="message">{{ message }}</p>
 </div>

@@ -1,52 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TrajetService } from '../services/tarjet.service';
-import { Trajet } from '../models/trajet'; // Assurez-vous que le chemin est correct
+import { ActivatedRoute } from '@angular/router';
+import { ReservationService } from '../services/reservation.service';
+import { AuthService } from '../services/auth.Service';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
   styleUrls: ['./reservation.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule], 
+  standalone: true,
+  imports: [FormsModule, CommonModule]
 })
 export class ReservationComponent implements OnInit {
-  trajet: Trajet | null = null;
-  loading = true;
-places: any;
+  trajetId!: number;
+  message = '';
+  isLoading = false;
 
   constructor(
-    private trajetService: TrajetService,
-    private route: ActivatedRoute,
-    private router: Router 
+    private reservationService: ReservationService,
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.trajetService.getTrajets().subscribe({
-        next: (data) => {
-          this.trajet = data.find((trajet) => trajet.id === +id) || null;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Erreur lors de la récupération du trajet', err);
-          this.loading = false;
-        }
-      });
-    }
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.trajetId = +id;
+      } else {
+        this.message = "❌ Trajet non trouvé dans l'URL.";
+      }
+    });
   }
 
-  // Ajouter la logique de réservation ici
-   reserver(): void {
-    if (this.trajet) {
-      console.log('Réservation effectuée pour le trajet', this.trajet);
-      
-      // Logique de réservation (mettre à jour la base de données, etc.)
-      
-      // Redirige vers la page de paiement
-      this.router.navigate(['/payment']);
+  reserver(): void {
+    const passengerId = localStorage.getItem('userId');
+    if (!passengerId) {
+      this.message = "❌ Utilisateur non connecté.";
+      return;
     }
+
+    this.isLoading = true;
+    this.reservationService.createReservation({
+      trajetId: this.trajetId,
+      passengerId: +passengerId
+    }).subscribe({
+      next: () => {
+        this.message = '✅ Réservation effectuée avec succès !';
+        this.isLoading = false;
+      },
+      error: () => {
+        this.message = '❌ Erreur lors de la réservation.';
+        this.isLoading = false;
+      }
+    });
   }
 }

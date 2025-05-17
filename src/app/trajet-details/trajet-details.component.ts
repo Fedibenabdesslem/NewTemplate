@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TrajetService } from '../services/tarjet.service';
 import { CommonModule } from '@angular/common';
 import { TrajetUserDto } from '../models/TrajetUserDto';
@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.Service';
   templateUrl: './trajet-details.component.html',
   styleUrls: ['./trajet-details.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
 })
 export class TrajetDetailsComponent implements OnInit {
   trajet: TrajetUserDto | null = null;
@@ -48,13 +48,6 @@ export class TrajetDetailsComponent implements OnInit {
     }
   }
 
-  payerEtTelechargerFacture(): void {
-    const user = this.authService.getCurrentUser(); 
-    if (this.trajet && user) {
-      this.factureService.generateFacture(this.trajet, user);
-      alert('facture générée avec succès !');
-    } else {
-      alert('Impossible de générer la facture. Informations manquantes.');
-    }
+  
   }
-}
+
