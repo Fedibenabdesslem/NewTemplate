@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reservation/:id', component: ReservationComponent },
 { path: 'reservation', component: ReservationComponent },
-
+ {path: 'Mes trajets', component: ProposerTrajetComponent},
   {path: 'trajet/:id',
     loadComponent: () => import('./trajet-details/trajet-details.component').then(m => m.TrajetDetailsComponent)},
 

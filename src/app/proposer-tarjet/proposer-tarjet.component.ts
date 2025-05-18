@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TrajetService } from '../services/tarjet.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { TrajetService } from '../services/tarjet.service';
   templateUrl: './proposer-tarjet.component.html',
   styleUrls: ['./proposer-tarjet.component.css'],
 
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,RouterLink],
 })
 export class ProposerTrajetComponent {
   trajetForm: FormGroup;

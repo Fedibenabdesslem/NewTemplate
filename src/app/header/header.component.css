@@ -42,3 +42,36 @@
     box-shadow: 0 4px 8px rgba(0, 114, 255, 0.3);
   }
   
+  .login-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-button {
+  background-color: #dc3545; /* Rouge */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(0, 114, 255, 0.4);
+}
+
+.login-button.logout {
+  background: linear-gradient(135deg, #dc3545, #c82333); /* dégradé rouge */
+  box-shadow: 0 8px 15px rgba(220, 53, 69, 0.3);
+}
+
+.login-button.logout:hover {
+  background: linear-gradient(135deg, #c82333, #dc3545);
+  box-shadow: 0 12px 20px rgba(220, 53, 69, 0.4);
+}

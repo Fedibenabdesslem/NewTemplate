@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { TrajetService } from '../services/tarjet.service';
 import { StatisticsService } from '../services/statistics.service';
 import { Trajet } from '../models/trajet';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   standalone: true,
   templateUrl: './dashboard-conducteur.component.html',
   styleUrls: ['./dashboard-conducteur.component.css'],
-  imports: [CommonModule, RouterModule, NgChartsModule, ProposerTrajetComponent],
+  imports: [CommonModule, RouterModule, NgChartsModule, ProposerTrajetComponent,RouterLink],
 })
 export class ConducteurDashboardComponent implements OnInit {
   section: 'trajets' | 'proposer' | 'stats' = 'trajets';

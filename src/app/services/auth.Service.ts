@@ -117,10 +117,19 @@ export class AuthService {
     const currentUser = this.getCurrentUser();
     return currentUser ? currentUser.role : null;
   }
-  logout(): void { /* ... */ }
-  isLoggedIn(): boolean {
-    return this.getToken() !== null;
-  }
+  logout(): void {
+  // Supprime les données du stockage local
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('token');
+  localStorage.removeItem('userId');
+
+  // Met à jour le BehaviorSubject pour notifier les composants abonnés
+  this.currentUserSubject.next(null);
+
+  // Redirige vers la page d'accueil ou de connexion
+  this.router.navigate(['/login']);
+}
+
   hasRole(requiredRole: string): boolean {
     const currentUser = this.getCurrentUser();
     return currentUser ? currentUser.role === requiredRole : false;

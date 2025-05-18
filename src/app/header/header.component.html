@@ -2,9 +2,16 @@
   <div class="logo">🚗 Covoiturage</div>
   <nav class="nav-links">
     <a routerLink="/">Accueil</a>
-    <a routerLink="/trajets">Trajets</a>
+    
     <a routerLink="/contact">Contact</a>
-     <button class="login-button " routerLink="/login">Connexion</button>
+
+    <button
+  class="login-button"
+  [ngClass]="{ 'logout': isLoggedIn }"
+  (click)="isLoggedIn ? logout() : navigateToLogin()"
+>
+  {{ isLoggedIn ? 'Déconnexion' : 'Connexion' }}
+</button>
+
   </nav>
 </header>
-
