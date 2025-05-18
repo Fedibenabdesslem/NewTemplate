@@ -6,4 +6,10 @@
   </button>
 
   <p *ngIf="message" class="message">{{ message }}</p>
+
+  <app-facture 
+    *ngIf="message.includes('✅ Réservation effectuée')" 
+    [trajet]="trajetData"
+    [user]="userData">
+  </app-facture>
 </div>
