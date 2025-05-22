@@ -1,0 +1,91 @@
+/* Style global du tableau */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* En-tête du tableau */
+thead tr {
+  background: linear-gradient(90deg, #4e54c8, #8f94fb);
+  color: white;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+thead th {
+  padding: 12px 15px;
+  text-align: left;
+  position: relative;
+}
+
+/* Emoji avant chaque titre de colonne */
+thead th:nth-child(1)::before { content: " "; }
+thead th:nth-child(2)::before { content: "👤 "; }
+thead th:nth-child(3)::before { content: "🧑‍🎓 "; }
+thead th:nth-child(4)::before { content: "📧 "; }
+thead th:nth-child(5)::before { content: "📞 "; }
+thead th:nth-child(6)::before { content: "🚗 "; }
+thead th:nth-child(7)::before { content: "📅 "; }
+
+/* Lignes du corps du tableau */
+tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Alternance de couleur */
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover sur les lignes */
+tbody tr:hover {
+  background-color: #e0e7ff;
+  box-shadow: 0 0 10px rgba(78, 84, 200, 0.3);
+}
+
+/* Cellules du tableau */
+tbody td {
+  padding: 12px 15px;
+  color: #333;
+}
+
+/* Pour rendre la date plus élégante */
+tbody td:last-child {
+  font-style: italic;
+  color: #555;
+}
+
+/* Titre de la page */
+h2 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #4e54c8;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2em;
+  position: relative;
+}
+
+/* Emoji dans le titre */
+h2::before {
+  content: " ";
+  font-size: 1.5em;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-150%);
+}
+
+/* Message chargement */
+div[ng-reflect-ng-if="true"] {
+  text-align: center;
+  font-size: 1.2em;
+  color: #4e54c8;
+  margin-bottom: 20px;
+}

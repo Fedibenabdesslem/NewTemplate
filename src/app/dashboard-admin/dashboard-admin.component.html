@@ -1,27 +1,27 @@
-<div class="dashboard-container">
-  <h1>Tableau de Bord Administrateur</h1>
+<div style="text-align: center; margin-bottom: 30px;">
+  <h1 style="
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #4e54c8;
+    font-weight: 700;
+    font-size: 2.5rem;
+    user-select: none;
+  ">
+    🛠️ Dashboard Admin
+  </h1>
+</div>
 
-  <div class="stats-cards">
-    <div class="card">
-      <h3>Total Utilisateurs</h3>
-      <p>{{ totalUsers }}</p>
-    </div>
-    <div class="card">
-      <h3>Conducteurs</h3>
-      <p>{{ totalDrivers }}</p>
-    </div>
-    <div class="card">
-      <h3>Trajets</h3>
-      <p>{{ totalTrips }}</p>
-    </div>
+<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+  <div class="card stat-card" 
+       style="flex: 1 1 200px; background-color: #f0f4f8; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;"
+       (click)="goToUsersList()">
+    <h3 style="margin-bottom: 10px; color: #333;">Total Utilisateurs</h3>
+    <p style="font-size: 2rem; font-weight: bold; color: #42a5f5;">{{ totalUsers }}</p>
   </div>
 
-  <div class="chart-container">
-    <h2>Statistiques des Inscriptions</h2>
-    <canvas baseChart
-            [data]="barChartData"
-            [options]="barChartOptions"
-            [type]="barChartType">
-    </canvas>
+  <div class="card stat-card" 
+       style="flex: 1 1 200px; background-color: #f0f4f8; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;"
+       (click)="goToTripsList()">
+    <h3 style="margin-bottom: 10px; color: #333;">Trajets</h3>
+    <p style="font-size: 2rem; font-weight: bold; color: #42a5f5;">{{ totalTrips }}</p>
   </div>
 </div>

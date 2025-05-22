@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 // Correction du nom du service
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TrajetService } from '../services/tarjet.service';
+import { TrajetService } from '../services/trajet.service';
 
 @Component({
   selector: 'app-edit-trajet',

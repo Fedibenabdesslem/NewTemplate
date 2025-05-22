@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { TrajetService } from '../services/tarjet.service';
+import { TrajetService } from '../services/trajet.service';
 import { CommonModule } from '@angular/common';
 import { TrajetUserDto } from '../models/TrajetUserDto';
 

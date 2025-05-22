@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
-import { TrajetService } from '../services/tarjet.service';
+import { TrajetService } from '../services/trajet.service';
 import { StatisticsService } from '../services/statistics.service';
 import { Trajet } from '../models/trajet';
 import { ChartConfiguration } from 'chart.js';

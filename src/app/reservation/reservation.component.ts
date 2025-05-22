@@ -4,7 +4,7 @@ import { ReservationService } from '../services/reservation.service';
 import { AuthService } from '../services/auth.Service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TrajetService } from '../services/tarjet.service';
+import { TrajetService } from '../services/trajet.service';
 import { UserService } from '../services/user.service';
 import { forkJoin } from 'rxjs';
 import { FactureComponent } from "../facture/facture.component";

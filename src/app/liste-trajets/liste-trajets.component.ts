@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrajetService } from '../services/tarjet.service';
+import { TrajetService } from '../services/trajet.service';
 import { Trajet } from '../models/trajet'; // Assurez-vous que le chemin est correct
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -17,17 +17,18 @@ export class ListeTrajetsComponent implements OnInit {
   constructor(private trajetService: TrajetService, private router: Router) {}
 
   ngOnInit(): void {
-    this.trajetService.getTrajets().subscribe({
-      next: (data) => {
-        this.trajets = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erreur lors de la récupération des trajets :', err);
-        this.loading = false;
-      }
-    });
-  }
+  this.trajetService.getAllTrajets().subscribe({
+    next: (data) => {
+      this.trajets = data;
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Erreur lors de la récupération des trajets :', err);
+      this.loading = false;
+    }
+  });
+}
+
 
   
 

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TrajetService } from './tarjet.service';
+import { TrajetService } from './trajet.service';
 
 
 

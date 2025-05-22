@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReclamationService } from '../services/reclamation.service';
 import { Trajet } from '../models/trajet';
 import { Reclamation } from '../models/reclamation';
-import { TrajetService } from '../services/tarjet.service';
+import { TrajetService } from '../services/trajet.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { routes } from '../app.routes';

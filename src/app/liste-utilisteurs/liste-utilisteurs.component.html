@@ -1,0 +1,29 @@
+<h2>Liste des utilisateurs</h2>
+<div *ngIf="loading">Chargement...</div>
+
+<table *ngIf="!loading" border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+      <th>Type d'utilisateur</th>
+      <!-- <th>Rôle</th> --> <!-- supprimé -->
+      <th>Date de création</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.id }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phoneNumber }}</td>
+      <td>{{ user.userType }}</td>
+      <!-- <td>{{ user.role }}</td> --> <!-- supprimé -->
+      <td>{{ user.createdAt | date:'short' }}</td>
+    </tr>
+  </tbody>
+</table>

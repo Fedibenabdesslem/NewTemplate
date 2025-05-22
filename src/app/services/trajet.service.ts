@@ -53,4 +53,16 @@ export class TrajetService {
 }
 
 
+getTotalTrajetsAdmin(): Observable<number> {
+  const url = 'http://localhost:8085/trajets/users';
+  return this.http.get<number>(url, { headers: this.getAuthHeaders() });
+}
+getAllTrajets(): Observable<Trajet[]> {
+  const url = `${this.apiUrl}/all`;
+  return this.http.get<Trajet[]>(url); // ❌ pas besoin de token
+}
+
+
+
+
 }

@@ -11,6 +11,7 @@ import { ListeTrajetsComponent } from './liste-trajets/liste-trajets.component';
 import { ConducteurDashboardComponent } from './dashboard-conducteur/dashboard-conducteur.component';
 import { DashboardPassagerComponent } from './dashboard-passager/dashboard-passager.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { ListeUtilisateursComponent } from './liste-utilisteurs/liste-utilisteurs.component';
 
 
 export const routes: Routes = [
@@ -23,6 +24,8 @@ export const routes: Routes = [
   { path: 'reservation/:id', component: ReservationComponent },
 { path: 'reservation', component: ReservationComponent },
  {path: 'Mes trajets', component: ProposerTrajetComponent},
+ {path : 'liste-trajets', component: ListeTrajetsComponent},
+ {path : 'liste-users' ,component:ListeUtilisateursComponent},
   {path: 'trajet/:id',
     loadComponent: () => import('./trajet-details/trajet-details.component').then(m => m.TrajetDetailsComponent)},
 
